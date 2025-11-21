@@ -1,0 +1,9 @@
+export { default as DashboardHeader } from './DashboardHeader';
+export { default as DashboardTabs } from './DashboardTabs';
+export { default as CategoriesTab } from './CategoriesTab';
+export { default as UsersTab } from './UsersTab';
+export { default as BookingsTab } from './BookingsTab';
+export { default as MessagesTab } from './MessagesTab';
+export { default as ProductManagementTab } from './ProductManagementTab';
+export { default as ProductPageTab } from './ProductPageTab';
+export { default as ContentTab } from './ContentTab';
