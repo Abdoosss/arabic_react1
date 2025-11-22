@@ -45,10 +45,6 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
-
   const addToCart = async (product) => {
     try {
       const token = localStorage.getItem("authToken");

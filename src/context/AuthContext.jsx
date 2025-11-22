@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+// import {} from "./CartContext";
 
 const AuthContext = createContext();
 
@@ -16,14 +17,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Don't auto-login - always start logged out
-    // Clear any existing session on app load
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("isAdmin");
-    localStorage.removeItem("authToken");
-    
-    setUser(null);
-    setIsAdmin(false);
+    setUser(localStorage.getItem("currentUser"));
+    setIsAdmin(localStorage.getItem("isAdmin"));
     setLoading(false);
   }, []);
 
