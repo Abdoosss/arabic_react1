@@ -13,6 +13,9 @@ export const API = {
   clearCart: `${BASE_URL}/api/cart/clear-cart`,
   newCategory: `${BASE_URL}/api/categories/new-category`,
   allCategories: `${BASE_URL}/api/categories/all-categories`,
+  allCategoriesForAdmin: `${BASE_URL}/api/categories/all-categories-admin`,
+  updateCategory: (categoryId) =>
+    `${BASE_URL}/api/categories/update-category/${categoryId}`,
   submitMessage: `${BASE_URL}/api/messages/submit`,
   allMessages: `${BASE_URL}/api/messages/all-messages`,
   newProduct: `${BASE_URL}/api/products/new-product`,
