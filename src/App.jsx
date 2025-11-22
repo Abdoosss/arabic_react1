@@ -18,7 +18,7 @@ import Home from "./pages/Home";
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/products/ProductDetails";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Contact from "./pages/contact/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 // import Dashboard from "./pages/Dashboard";

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { API } from "../utils/api";
-import { create } from "zustand";
 
 const categoryServices = {
   getAllCategoriesForAdmin: async () => {

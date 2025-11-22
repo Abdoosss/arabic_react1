@@ -88,17 +88,7 @@ const Dashboard = () => {
           {activeTab === "bookings" && <BookingsTab />}
 
           {/* Messages Tab */}
-          {activeTab === "messages" && (
-            <MessagesTab
-              messages={messages}
-              handleMarkMessageAsRead={() => {
-                /* handler */
-              }}
-              handleDeleteMessage={() => {
-                /* handler */
-              }}
-            />
-          )}
+          {activeTab === "messages" && <MessagesTab />}
 
           {/* Product Management Tab */}
           {activeTab === "product-management" && (
