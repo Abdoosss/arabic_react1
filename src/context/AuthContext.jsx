@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-// import {} from "./CartContext";
+import { createContext, useContext, useState, useEffect } from "react";
+// import { useCart } from "./CartContext";
 
 const AuthContext = createContext();
 
@@ -12,6 +12,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
+  // const { setCartItems } = useCart();
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setIsAdmin(false);
+    // setCartItems([]);
     localStorage.removeItem("currentUser");
     localStorage.removeItem("isAdmin");
     localStorage.removeItem("authToken");

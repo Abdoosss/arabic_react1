@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { API } from "../utils/api";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
@@ -14,6 +15,7 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
+  const { user } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   // Fetch cart from API on mount
@@ -38,12 +40,19 @@ export const CartProvider = ({ children }) => {
           Error("Failed to fetch cart data from server");
         }
       } catch (error) {
-        console.error("Error fetching cart:", error);
+        // console.error("Error fetching cart:", error);
       }
     };
 
+    // If user logged out, clear local cart state immediately
+    if (!user) {
+      setCartItems([]);
+      localStorage.removeItem("cart");
+      return;
+    }
+
     fetchCart();
-  }, []);
+  }, [user]);
 
   const addToCart = async (product) => {
     try {
@@ -184,6 +193,7 @@ export const CartProvider = ({ children }) => {
 
   const value = {
     cartItems,
+    setCartItems,
     isCartOpen,
     setIsCartOpen,
     addToCart,
