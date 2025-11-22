@@ -82,20 +82,10 @@ const Dashboard = () => {
           {activeTab === "categories" && <CategoriesTab />}
 
           {/* Users Tab */}
-          {activeTab === "users" && <UsersTab users={users} />}
+          {activeTab === "users" && <UsersTab />}
 
           {/* Bookings Tab */}
-          {activeTab === "bookings" && (
-            <BookingsTab
-              bookings={bookings}
-              handleUpdateBookingStatus={() => {
-                /* handler */
-              }}
-              handleDeleteBooking={() => {
-                /* handler */
-              }}
-            />
-          )}
+          {activeTab === "bookings" && <BookingsTab />}
 
           {/* Messages Tab */}
           {activeTab === "messages" && (
