@@ -119,7 +119,7 @@ const CategoriesTab = () => {
               <p className="mb-4 text-sm text-gray-600">
                 {category.productCount} منتج في هذه الفئة
               </p>
-              <div className="flex space-x-2 space-x-reverse">
+              <div className="flex gap-4 space-x-reverse">
                 <button
                   onClick={() => handleEditCategory(category)}
                   className="flex-1 px-3 py-2 text-sm text-white transition-colors bg-blue-500 rounded hover:bg-blue-600"
