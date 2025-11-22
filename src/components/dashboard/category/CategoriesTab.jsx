@@ -1,18 +1,89 @@
 import { motion } from "framer-motion";
 import useCategories from "./useCategories";
+import useCreateCategory from "./useCreateCategory";
+import useEditCategory from "./useEditCategory";
+import Modal from "../../Modal";
+import { DotsLoader } from "react-loadly";
+import { useState } from "react";
 
-const CategoriesTab = ({
-  // categories,
-  products,
-  handleAddCategory,
-  handleEditCategory,
-  handleDeleteCategory,
-}) => {
+const CategoriesTab = () => {
   const { categories, isLoading, isError, refetch } = useCategories();
-  console.log(categories);
+  const { createCategory, isCreating } = useCreateCategory();
+  const { editCategory, isEditing } = useEditCategory();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("create"); // "create" or "edit"
+  const [formData, setFormData] = useState({ name: "", description: "" });
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+
+  const handleAddCategory = () => {
+    setModalMode("create");
+    setFormData({ name: "", description: "" });
+    setEditingCategoryId(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEditCategory = (category) => {
+    setModalMode("edit");
+    setFormData({ name: category.name, description: category.description });
+    setEditingCategoryId(category._id);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteCategory = (category) => {
+    // TODO: Implement delete category
+    console.log("Delete category:", category._id);
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (modalMode === "create") {
+      createCategory(formData, {
+        onSuccess: () => {
+          setIsModalOpen(false);
+          setFormData({ name: "", description: "" });
+        },
+      });
+    } else if (modalMode === "edit") {
+      editCategory(
+        { categoryId: editingCategoryId, categoryData: formData },
+        {
+          onSuccess: () => {
+            setIsModalOpen(false);
+            setFormData({ name: "", description: "" });
+            setEditingCategoryId(null);
+          },
+        }
+      );
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setFormData({ name: "", description: "" });
+    setEditingCategoryId(null);
+  };
 
   if (isLoading) {
-    return <div>جارٍ التحميل...</div>;
+    return (
+      <DotsLoader
+        size={20}
+        color="#8e7ab5"
+        speed={1.4}
+        loaderCenter={true}
+        count={3}
+        borderwidth={4}
+        secondaryColor="#8e7ab5"
+      />
+    );
   }
 
   if (isError) {
@@ -67,6 +138,73 @@ const CategoriesTab = ({
           );
         })}
       </div>
+
+      {/* Category Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={modalMode === "create" ? "إضافة فئة جديدة" : "تعديل الفئة"}
+      >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="name"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              اسم الفئة
+            </label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleFormChange}
+              placeholder="أدخل اسم الفئة"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="description"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              الوصف
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleFormChange}
+              placeholder="أدخل وصف الفئة"
+              rows="4"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="submit"
+              disabled={isCreating || isEditing}
+              className="flex-1 px-4 py-2 text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
+            >
+              {isCreating || isEditing
+                ? "جاري..."
+                : modalMode === "create"
+                ? "إنشاء"
+                : "تحديث"}
+            </button>
+            <button
+              type="button"
+              onClick={handleCloseModal}
+              className="flex-1 px-4 py-2 text-gray-700 transition-colors bg-gray-300 rounded-lg hover:bg-gray-400"
+            >
+              إلغاء
+            </button>
+          </div>
+        </form>
+      </Modal>
     </motion.div>
   );
 };

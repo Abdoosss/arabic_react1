@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API } from "../utils/api";
+import { create } from "zustand";
 
 const categoryServices = {
   getAllCategoriesForAdmin: async () => {
@@ -31,6 +32,54 @@ const categoryServices = {
       console.log("Using fallback categories data");
       // Return fallback categories on error
       //   return getFallbackCategories();
+    }
+  },
+
+  createCategory: async (categoryData) => {
+    try {
+      const response = await axios.post(
+        API.newCategory,
+        { name: categoryData.name, description: categoryData.description },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      if (response.status !== 201) {
+        throw new Error("Failed to create category");
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Error creating category:", error);
+      throw error;
+    }
+  },
+
+  updateCategory: async (categoryId, categoryData) => {
+    try {
+      const response = await axios.put(
+        API.updateCategory(categoryId),
+        { name: categoryData.name, description: categoryData.description },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to update category");
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Error updating category:", error);
+      throw error;
     }
   },
 };
