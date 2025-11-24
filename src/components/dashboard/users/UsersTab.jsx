@@ -5,8 +5,6 @@ import { DotsLoader } from "react-loadly";
 const UsersTab = () => {
   const { users, isLoading, isError, refetch } = useUsers();
 
-  console.log(users);
-
   if (isLoading) {
     return (
       <DotsLoader
@@ -65,7 +63,7 @@ const UsersTab = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {users.map((user) => (
-                <tr key={user.id}>
+                <tr key={user._id}>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                     {user.username}
                   </td>

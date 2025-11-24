@@ -5,8 +5,6 @@ import useMessages from "./useMessages";
 const MessagesTab = () => {
   const { messages, isLoading, isError, refetch } = useMessages();
 
-  console.log(messages);
-
   // const handleMarkMessageAsRead = async (messageId) => {
   //   try {
   //     await fetch(`/api/messages/${messageId}/mark-as-read`, {
@@ -146,7 +144,7 @@ const MessagesTab = () => {
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((message) => (
                 <div
-                  key={message.id}
+                  key={message._id}
                   className={`bg-white rounded-lg shadow-md p-6 border-r-4 ${
                     message.isRead ? "border-gray-300" : "border-blue-500"
                   }`}

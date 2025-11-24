@@ -103,7 +103,7 @@ const BookingsTab = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {bookings.map((booking) => (
-                <tr key={booking.id}>
+                <tr key={booking._id}>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900">
                     {booking.items ? (
                       <div className="space-y-1">

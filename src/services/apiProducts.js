@@ -14,8 +14,6 @@ const productServices = {
       const categories =
         response.data.data || response.data.categories || response.data || [];
 
-      console.log("Fetched categories:", categories); // Debug log
-
       return Array.isArray(categories) && categories.length > 0
         ? categories
         : getFallbackCategories();
