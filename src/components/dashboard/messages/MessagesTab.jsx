@@ -1,9 +1,22 @@
-import React from "react";
+import useMarkMessageAsRead from "./useMarkMessageAsRead";
+import useDeleteMessage from "./useDeleteMessage";
+
 import { motion } from "framer-motion";
 import useMessages from "./useMessages";
 
 const MessagesTab = () => {
   const { messages, isLoading, isError, refetch } = useMessages();
+  const {
+    markMessageAsRead,
+    isPending,
+    isError: isMarkError,
+  } = useMarkMessageAsRead();
+
+  const {
+    deleteMessage,
+    isPending: isDeletePending,
+    isError: isDeleteError,
+  } = useDeleteMessage();
 
   // const handleMarkMessageAsRead = async (messageId) => {
   //   try {
@@ -150,7 +163,7 @@ const MessagesTab = () => {
                   }`}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-3 space-x-reverse">
+                    <div className="flex items-center gap-3 space-x-reverse">
                       <div
                         className={`w-3 h-3 rounded-full ${
                           message.isRead ? "bg-gray-300" : "bg-blue-500"
@@ -201,10 +214,10 @@ const MessagesTab = () => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex space-x-2 space-x-reverse">
+                    <div className="flex gap-3 space-x-reverse">
                       {!message.isRead && (
                         <button
-                          onClick={() => handleMarkMessageAsRead(message.id)}
+                          onClick={() => markMessageAsRead(message._id)}
                           className="flex items-center px-4 py-2 text-sm text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
                         >
                           <svg
@@ -262,7 +275,7 @@ const MessagesTab = () => {
                       </a>
                     </div>
                     <button
-                      onClick={() => handleDeleteMessage(message.id)}
+                      onClick={() => deleteMessage(message._id)}
                       className="flex items-center text-red-600 transition-colors hover:text-red-800"
                     >
                       <svg

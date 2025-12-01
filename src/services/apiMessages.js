@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API } from "../utils/api";
+import { mark } from "framer-motion/client";
 
 const messagesServices = {
   getAllMessages: async () => {
@@ -27,6 +28,40 @@ const messagesServices = {
 
     if (response.status !== 201) {
       throw new Error("Failed to submit message");
+    }
+
+    return response.data.data;
+  },
+
+  markMessageAsRead: async (messageId) => {
+    const response = await axios.put(
+      API.markMessageAsRead(messageId),
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      throw new Error("Failed to mark message as read");
+    }
+
+    return response.data.data;
+  },
+
+  deleteMessage: async (messageId) => {
+    const response = await axios.delete(API.deleteMessage(messageId), {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    });
+
+    if (response.status !== 200) {
+      throw new Error("Failed to delete message");
     }
 
     return response.data.data;

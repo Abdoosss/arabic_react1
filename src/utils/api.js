@@ -19,6 +19,9 @@ export const API = {
     `${BASE_URL}/api/categories/update-category/${categoryId}`,
   submitMessage: `${BASE_URL}/api/messages/submit`,
   allMessages: `${BASE_URL}/api/messages/all-messages`,
+  markMessageAsRead: (messageId) =>
+    `${BASE_URL}/api/messages/mark-as-read/${messageId}`,
+  deleteMessage: (messageId) => `${BASE_URL}/api/messages/delete/${messageId}`,
   newProduct: `${BASE_URL}/api/products/new-product`,
   allProducts: `${BASE_URL}/api/products/filter-products`,
   filterProducts: (category) =>
