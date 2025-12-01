@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import useProducts from "../../hooks/products/useProducts";
 import { useSearchParams } from "react-router-dom";
+
+import { motion } from "framer-motion";
 import ProductCard from "../../components/ProductCard";
-import useProducts from "../products/useProducts";
 import { DotsLoader } from "react-loadly";
 
 const Products = () => {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API } from "../utils/api";
+import { create } from "zustand";
 
 const productServices = {
   getAllCategories: async () => {
@@ -69,6 +70,26 @@ const productServices = {
     } catch (error) {
       console.error("Error fetching product details:", error);
       throw error; // Re-throw for product details since we need to show error page
+    }
+  },
+
+  createProduct: async (productData) => {
+    try {
+      const response = await axios.post(API.newProduct, productData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      if (response.status !== 201) {
+        throw new Error("Failed to create product");
+      }
+
+      return response.data.data;
+    } catch (error) {
+      console.error("Error creating product:", error);
+      throw error;
     }
   },
 };
