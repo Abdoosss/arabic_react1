@@ -22,7 +22,7 @@ import Contact from "./pages/contact/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 // import Dashboard from "./pages/Dashboard";
-import Dashboard from "./pages/Dashboard_New";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,5 +1,5 @@
-export const BASE_URL = "https://my-break-furniture-app.vercel.app";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://my-break-furniture-app.vercel.app";
+export const BASE_URL = "http://localhost:3000";
 
 export const API = {
   health: `${BASE_URL}/api/health`,

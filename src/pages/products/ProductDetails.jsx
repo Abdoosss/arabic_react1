@@ -12,7 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
-import useProduct from "./useProduct";
+import useProduct from "../../hooks/products/useProduct";
 
 const ProductDetails = () => {
   const { id } = useParams();

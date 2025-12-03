@@ -1,4 +1,4 @@
-import { UploadDropzone } from "../utils/uploadthing";
+import { UploadDropzone } from "./uploadthing";
 
 export const OurUploadDropzone = ({
   endpoint = "imageUploader",
