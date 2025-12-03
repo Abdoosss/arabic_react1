@@ -75,12 +75,25 @@ const productServices = {
 
   createProduct: async (productData) => {
     try {
-      const response = await axios.post(API.newProduct, productData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      console.log(productData);
+
+      const response = await axios.post(
+        API.newProduct,
+        {
+          name: productData.name,
+          description: productData.description,
+          price: Number(productData.price),
+          category: productData.category,
+          images: productData.images,
+          features: productData.features,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
 
       if (response.status !== 201) {
         throw new Error("Failed to create product");

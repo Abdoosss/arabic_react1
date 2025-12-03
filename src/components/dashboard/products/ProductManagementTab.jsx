@@ -1,10 +1,12 @@
 import useProducts from "../../../hooks/products/useProducts";
 import useCreateProduct from "./useCreateProduct";
+import Modal from "../../Modal";
+import { OurUploadDropzone } from "../../UploadthingDropzone";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const ProductManagementTab = ({
-  handleAddProduct,
   handleDeleteProduct,
   setSelectedProductForEdit,
   setShowProductEditModal,
@@ -13,6 +15,104 @@ const ProductManagementTab = ({
 }) => {
   const { products, categories } = useProducts();
   const { createProduct, isError, isPending } = useCreateProduct();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    category: "",
+    features: "",
+    images: [], // Stores uploaded image URLs
+  });
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleAddProduct = () => {
+    setFormData({
+      name: "",
+      description: "",
+      price: "",
+      category: categories.length > 0 ? categories[0]._id : "",
+      features: "",
+      images: [],
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleUploadComplete = (res) => {
+    // res is an array of uploaded file info with URLs
+    const uploadedUrls = res.map((file) => file.ufsUrl);
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...uploadedUrls],
+    }));
+    setIsUploading(false);
+  };
+
+  const handleUploadError = (error) => {
+    console.error("Upload error:", error);
+    setIsUploading(false);
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Create data object for submission (images are already uploaded URLs)
+    const submitData = {
+      name: formData.name,
+      description: formData.description,
+      price: formData.price,
+      category: formData.category,
+      features: formData.features
+        ? formData.features
+            .split(",")
+            .map((f) => f.trim())
+            .filter((f) => f)
+        : [],
+      images: formData.images, // Already contains uploaded URLs
+    };
+
+    createProduct(submitData, {
+      onSuccess: () => {
+        setIsModalOpen(false);
+        setFormData({
+          name: "",
+          description: "",
+          price: "",
+          category: "",
+          features: "",
+          images: [],
+        });
+      },
+    });
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setFormData({
+      name: "",
+      description: "",
+      price: "",
+      category: "",
+      features: "",
+      images: [],
+    });
+  };
 
   return (
     <motion.div
@@ -330,6 +430,180 @@ const ProductManagementTab = ({
           </button>
         </div>
       )}
+
+      {/* Add Product Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title="إضافة منتج جديد"
+      >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="name"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              اسم المنتج
+            </label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleFormChange}
+              placeholder="أدخل اسم المنتج"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="description"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              الوصف
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleFormChange}
+              placeholder="أدخل وصف المنتج"
+              rows="3"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="price"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              السعر (جنيه)
+            </label>
+            <input
+              id="price"
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleFormChange}
+              placeholder="أدخل سعر المنتج"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+              min="0"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="category"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              الفئة
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleFormChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">اختر الفئة</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="features"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              المميزات (مفصولة بفاصلة)
+            </label>
+            <input
+              id="features"
+              type="text"
+              name="features"
+              value={formData.features}
+              onChange={handleFormChange}
+              placeholder="ميزة 1، ميزة 2، ميزة 3"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              صور المنتج
+            </label>
+            <OurUploadDropzone
+              endpoint="imageUploader"
+              onUploadComplete={handleUploadComplete}
+              onUploadError={handleUploadError}
+              onUploadBegin={() => setIsUploading(true)}
+            />
+            {/* Preview uploaded images */}
+            {formData.images.length > 0 && (
+              <div className="mt-3">
+                <p className="mb-2 text-sm text-gray-600">
+                  {formData.images.length} صورة مرفوعة
+                </p>
+                <div className="grid grid-cols-4 gap-2">
+                  {formData.images.map((url, index) => (
+                    <div key={index} className="relative group">
+                      <img
+                        src={url}
+                        alt={`صورة ${index + 1}`}
+                        className="object-cover w-full h-20 border border-gray-200 rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 -mt-1 -mr-1 text-white transition-opacity bg-red-500 rounded-full opacity-0 group-hover:opacity-100"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {isError && (
+            <div className="p-3 text-sm text-red-700 bg-red-100 rounded-lg">
+              حدث خطأ أثناء إنشاء المنتج. حاول مرة أخرى.
+            </div>
+          )}
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="submit"
+              disabled={isPending || isUploading}
+              className="flex-1 px-4 py-2 text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
+            >
+              {isPending
+                ? "جاري الإنشاء..."
+                : isUploading
+                ? "جاري رفع الصور..."
+                : "إنشاء المنتج"}
+            </button>
+            <button
+              type="button"
+              onClick={handleCloseModal}
+              className="flex-1 px-4 py-2 text-gray-700 transition-colors bg-gray-300 rounded-lg hover:bg-gray-400"
+            >
+              إلغاء
+            </button>
+          </div>
+        </form>
+      </Modal>
     </motion.div>
   );
 };
