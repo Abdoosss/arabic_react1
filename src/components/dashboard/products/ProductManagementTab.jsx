@@ -1,22 +1,34 @@
+import { useState, useEffect } from "react";
 import useProducts from "../../../hooks/products/useProducts";
 import useCreateProduct from "./useCreateProduct";
+import useUpdateProduct from "./useUpdateProduct";
+import useDeleteProduct from "./useDeleteProduct";
+
+import { motion } from "framer-motion";
 import Modal from "../../Modal";
 import { OurUploadDropzone } from "../../UploadthingDropzone";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
-
 const ProductManagementTab = ({
   handleDeleteProduct,
-  setSelectedProductForEdit,
-  setShowProductEditModal,
   setSelectedProductForPreview,
   setShowProductPreviewModal,
 }) => {
   const { products, categories } = useProducts();
   const { createProduct, isError, isPending } = useCreateProduct();
+  const {
+    updateProduct,
+    isError: isUpdateError,
+    isPending: isUpdatePending,
+  } = useUpdateProduct();
+  const {
+    deleteProduct,
+    isError: isDeleteError,
+    isPending: isDeletePending,
+  } = useDeleteProduct();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -25,7 +37,16 @@ const ProductManagementTab = ({
     features: "",
     images: [], // Stores uploaded image URLs
   });
+  const [editFormData, setEditFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    category: "",
+    features: "",
+    images: [],
+  });
   const [isUploading, setIsUploading] = useState(false);
+  const [isEditUploading, setIsEditUploading] = useState(false);
 
   const handleAddProduct = () => {
     setFormData({
@@ -112,6 +133,117 @@ const ProductManagementTab = ({
       features: "",
       images: [],
     });
+  };
+
+  const handleEditProduct = (product) => {
+    setEditingProduct(product);
+    setEditFormData({
+      name: product.name,
+      description: product.description,
+      price: product.price.toString(),
+      category: product.category._id || product.category,
+      features: Array.isArray(product.features)
+        ? product.features.join(", ")
+        : "",
+      images: product.images || [],
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditFormChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleEditUploadComplete = (res) => {
+    const uploadedUrls = res.map((file) => file.ufsUrl);
+    setEditFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...uploadedUrls],
+    }));
+    setIsEditUploading(false);
+  };
+
+  const handleEditUploadError = (error) => {
+    console.error("Upload error:", error);
+    setIsEditUploading(false);
+  };
+
+  const handleEditRemoveImage = (indexToRemove) => {
+    setEditFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+
+    const submitData = {
+      name: editFormData.name,
+      description: editFormData.description,
+      price: editFormData.price,
+      category: editFormData.category,
+      features: editFormData.features
+        ? editFormData.features
+            .split(",")
+            .map((f) => f.trim())
+            .filter((f) => f)
+        : [],
+      images: editFormData.images,
+    };
+
+    updateProduct(
+      { productId: editingProduct._id, productData: submitData },
+      {
+        onSuccess: () => {
+          setIsEditModalOpen(false);
+          setEditingProduct(null);
+          setEditFormData({
+            name: "",
+            description: "",
+            price: "",
+            category: "",
+            features: "",
+            images: [],
+          });
+        },
+      }
+    );
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingProduct(null);
+    setEditFormData({
+      name: "",
+      description: "",
+      price: "",
+      category: "",
+      features: "",
+      images: [],
+    });
+  };
+
+  const handleDeleteProductClick = (product) => {
+    if (
+      window.confirm(
+        `هل أنت متأكد من حذف المنتج "${product.name}"؟\n\nلن تتمكن من التراجع عن هذا الإجراء.`
+      )
+    ) {
+      deleteProduct(product._id, {
+        onSuccess: () => {
+          console.log("Product deleted successfully");
+        },
+        onError: (error) => {
+          console.error("Error deleting product:", error);
+          alert("حدث خطأ أثناء حذف المنتج. حاول مرة أخرى.");
+        },
+      });
+    }
   };
 
   return (
@@ -339,10 +471,7 @@ const ProductManagementTab = ({
               {/* Action Buttons */}
               <div className="space-y-2">
                 <button
-                  onClick={() => {
-                    setSelectedProductForEdit(product);
-                    setShowProductEditModal(true);
-                  }}
+                  onClick={() => handleEditProduct(product)}
                   className="flex items-center justify-center w-full px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
                   <svg
@@ -390,8 +519,9 @@ const ProductManagementTab = ({
                     معاينة
                   </button>
                   <button
-                    onClick={() => handleDeleteProduct(product.id)}
-                    className="flex items-center justify-center px-3 py-2 text-sm text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
+                    onClick={() => handleDeleteProductClick(product)}
+                    disabled={isDeletePending}
+                    className="flex items-center justify-center px-3 py-2 text-sm text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     <svg
                       className="w-4 h-4 ml-1"
@@ -406,7 +536,7 @@ const ProductManagementTab = ({
                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                       />
                     </svg>
-                    حذف
+                    {isDeletePending ? "جاري الحذف..." : "حذف"}
                   </button>
                 </div>
               </div>
@@ -597,6 +727,180 @@ const ProductManagementTab = ({
             <button
               type="button"
               onClick={handleCloseModal}
+              className="flex-1 px-4 py-2 text-gray-700 transition-colors bg-gray-300 rounded-lg hover:bg-gray-400"
+            >
+              إلغاء
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* Edit Product Modal */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        title="تعديل المنتج"
+      >
+        <form onSubmit={handleEditSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="edit-name"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              اسم المنتج
+            </label>
+            <input
+              id="edit-name"
+              type="text"
+              name="name"
+              value={editFormData.name}
+              onChange={handleEditFormChange}
+              placeholder="أدخل اسم المنتج"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="edit-description"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              الوصف
+            </label>
+            <textarea
+              id="edit-description"
+              name="description"
+              value={editFormData.description}
+              onChange={handleEditFormChange}
+              placeholder="أدخل وصف المنتج"
+              rows="3"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="edit-price"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              السعر (جنيه)
+            </label>
+            <input
+              id="edit-price"
+              type="number"
+              name="price"
+              value={editFormData.price}
+              onChange={handleEditFormChange}
+              placeholder="أدخل سعر المنتج"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+              min="0"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="edit-category"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              الفئة
+            </label>
+            <select
+              id="edit-category"
+              name="category"
+              value={editFormData.category}
+              onChange={handleEditFormChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">اختر الفئة</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="edit-features"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              المميزات (مفصولة بفاصلة)
+            </label>
+            <input
+              id="edit-features"
+              type="text"
+              name="features"
+              value={editFormData.features}
+              onChange={handleEditFormChange}
+              placeholder="ميزة 1، ميزة 2، ميزة 3"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              صور المنتج
+            </label>
+            <OurUploadDropzone
+              endpoint="imageUploader"
+              onUploadComplete={handleEditUploadComplete}
+              onUploadError={handleEditUploadError}
+              onUploadBegin={() => setIsEditUploading(true)}
+            />
+            {/* Preview uploaded images */}
+            {editFormData.images.length > 0 && (
+              <div className="mt-3">
+                <p className="mb-2 text-sm text-gray-600">
+                  {editFormData.images.length} صورة مرفوعة
+                </p>
+                <div className="grid grid-cols-4 gap-2">
+                  {editFormData.images.map((url, index) => (
+                    <div key={index} className="relative group">
+                      <img
+                        src={url}
+                        alt={`صورة ${index + 1}`}
+                        className="object-cover w-full h-20 border border-gray-200 rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleEditRemoveImage(index)}
+                        className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 -mt-1 -mr-1 text-white transition-opacity bg-red-500 rounded-full opacity-0 group-hover:opacity-100"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {isUpdateError && (
+            <div className="p-3 text-sm text-red-700 bg-red-100 rounded-lg">
+              حدث خطأ أثناء تحديث المنتج. حاول مرة أخرى.
+            </div>
+          )}
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="submit"
+              disabled={isUpdatePending || isEditUploading}
+              className="flex-1 px-4 py-2 text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
+            >
+              {isUpdatePending
+                ? "جاري التحديث..."
+                : isEditUploading
+                ? "جاري رفع الصور..."
+                : "تحديث المنتج"}
+            </button>
+            <button
+              type="button"
+              onClick={handleCloseEditModal}
               className="flex-1 px-4 py-2 text-gray-700 transition-colors bg-gray-300 rounded-lg hover:bg-gray-400"
             >
               إلغاء

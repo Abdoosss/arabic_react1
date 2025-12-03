@@ -1,5 +1,5 @@
-export const BASE_URL = "https://my-break-furniture-app.vercel.app";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://my-break-furniture-app.vercel.app";
+export const BASE_URL = "http://localhost:3000";
 
 export const API = {
   health: `${BASE_URL}/api/health`,
@@ -19,15 +19,16 @@ export const API = {
     `${BASE_URL}/api/categories/update-category/${categoryId}`,
   submitMessage: `${BASE_URL}/api/messages/submit`,
   allMessages: `${BASE_URL}/api/messages/all-messages`,
-  markMessageAsRead: (messageId) =>
-    `${BASE_URL}/api/messages/mark-as-read/${messageId}`,
-  deleteMessage: (messageId) => `${BASE_URL}/api/messages/delete/${messageId}`,
   newProduct: `${BASE_URL}/api/products/new-product`,
   allProducts: `${BASE_URL}/api/products/filter-products`,
   filterProducts: (category) =>
     `${BASE_URL}/api/products/filter-products?category=${category}`,
   productDetails: (productId) =>
     `${BASE_URL}/api/products/get-product/${productId}`,
+  updateProduct: (productId) =>
+    `${BASE_URL}/api/products/update-product/${productId}`,
+  deleteProduct: (productId) =>
+    `${BASE_URL}/api/products/delete-product/${productId}`,
   newReservation: `${BASE_URL}/api/reservations/new-reservation`,
   allReservations: `${BASE_URL}/api/reservations/all-reservations`,
   updateReservationStatus: (reservationId) =>

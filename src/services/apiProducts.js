@@ -105,6 +105,56 @@ const productServices = {
       throw error;
     }
   },
+
+  updateProduct: async (productId, productData) => {
+    try {
+      const response = await axios.put(
+        API.updateProduct(productId),
+        {
+          name: productData.name,
+          description: productData.description,
+          price: Number(productData.price),
+          category: productData.category,
+          images: productData.images,
+          features: productData.features,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to update product");
+      }
+
+      return response.data.data;
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  },
+
+  deleteProduct: async (productId) => {
+    try {
+      const response = await axios.delete(API.deleteProduct(productId), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error("Failed to delete product");
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      throw error;
+    }
+  },
 };
 
 export default productServices;
