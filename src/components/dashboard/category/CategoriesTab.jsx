@@ -3,7 +3,7 @@ import useCategories from "./useCategories";
 import useCreateCategory from "./useCreateCategory";
 import useEditCategory from "./useEditCategory";
 import Modal from "../../Modal";
-import { DotsLoader } from "react-loadly";
+import Loading from "../../Loading";
 import { useState } from "react";
 
 const CategoriesTab = () => {
@@ -73,17 +73,7 @@ const CategoriesTab = () => {
   };
 
   if (isLoading) {
-    return (
-      <DotsLoader
-        size={20}
-        color="#8e7ab5"
-        speed={1.4}
-        loaderCenter={true}
-        count={3}
-        borderwidth={4}
-        secondaryColor="#8e7ab5"
-      />
-    );
+    return <Loading />;
   }
 
   if (isError) {

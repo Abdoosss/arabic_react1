@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { motion } from "framer-motion";
 import ProductCard from "../../components/ProductCard";
-import { DotsLoader } from "react-loadly";
+import Loading from "../../components/Loading";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
@@ -147,15 +147,7 @@ const Products = () => {
             className="py-16 text-center"
           >
             <div className="flex items-center justify-center py-8">
-              <DotsLoader
-                size={20}
-                color="#8e7ab5"
-                speed={1.4}
-                loaderCenter={true}
-                count={3}
-                borderwidth={4}
-                secondaryColor="#8e7ab5"
-              />
+              <Loading />
             </div>
           </motion.div>
         ) : sortedProducts.length > 0 ? (

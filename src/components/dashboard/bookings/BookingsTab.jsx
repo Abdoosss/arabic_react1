@@ -2,12 +2,14 @@ import React from "react";
 import { motion } from "framer-motion";
 import useBookings from "./useBookings";
 import useUpdateBooking from "./useUpdateBooking";
-import { DotsLoader } from "react-loadly";
+import Loading from "../../Loading";
 import { toast } from "react-toastify";
 
 const BookingsTab = () => {
   const { bookings, isLoading, isError, refetch } = useBookings();
   const { updateBooking, isUpdating } = useUpdateBooking();
+
+  console.log(bookings);
 
   const handleUpdateBookingStatus = (bookingId, newStatus) => {
     try {
@@ -42,17 +44,7 @@ const BookingsTab = () => {
   };
 
   if (isLoading) {
-    return (
-      <DotsLoader
-        size={20}
-        color="#8e7ab5"
-        speed={1.4}
-        loaderCenter={true}
-        count={3}
-        borderwidth={4}
-        secondaryColor="#8e7ab5"
-      />
-    );
+    return <Loading />;
   }
 
   if (isError) {
@@ -109,7 +101,8 @@ const BookingsTab = () => {
                       <div className="space-y-1">
                         {booking.items.map((item, index) => (
                           <div key={index} className="text-xs">
-                            {item.product.name} × {item.quantity}
+                            {item.product?.name || "Unknown Product"}×{" "}
+                            {item.quantity}
                           </div>
                         ))}
                         <div className="text-xs font-semibold text-primary">
