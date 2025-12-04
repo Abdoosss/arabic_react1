@@ -33,4 +33,11 @@ export const API = {
   allReservations: `${BASE_URL}/api/reservations/all-reservations`,
   updateReservationStatus: (reservationId) =>
     `${BASE_URL}/api/reservations/update-reservation-status/${reservationId}`,
+
+  createHeroSlide: `${BASE_URL}/api/hero-content/new-hero-content`,
+  getHeroSlides: `${BASE_URL}/api/hero-content/all-hero-content`,
+  updateHeroSlide: (slideId) =>
+    `${BASE_URL}/api/hero-content/update-hero-content/${slideId}`,
+  deleteHeroSlide: (slideId) =>
+    `${BASE_URL}/api/hero-content/delete-hero-content/${slideId}`,
 };

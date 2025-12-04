@@ -1,4 +1,13 @@
+import useHeroSlides from "./useHeroSlides";
+
 const HeroSlides = () => {
+  const { heroSlides, isHeroSlidesLoading, refetchHeroSlides } =
+    useHeroSlides();
+
+  // TODO: Implement modal for adding/editing hero slides
+  // const [showHeroModal, setShowHeroModal] = useState(false);
+  // const [editingContent, setEditingContent] = useState(null);
+  // const { siteContent } = useContext(SiteContentContext);
   return (
     <div className="p-6 bg-white border border-gray-200 shadow-lg rounded-xl">
       <div className="flex items-center justify-between mb-6">
@@ -41,9 +50,9 @@ const HeroSlides = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {siteContent.hero?.slides?.map((slide, index) => (
+        {heroSlides?.map((slide, index) => (
           <div
-            key={slide.id}
+            key={slide._id}
             className="p-4 transition-shadow border border-blue-200 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 hover:shadow-md"
           >
             <div className="flex items-center justify-between mb-3">
@@ -51,7 +60,7 @@ const HeroSlides = () => {
                 Slide {index + 1}
               </span>
               <button
-                onClick={() => handleEditContent(`hero-slide-${slide.id}`)}
+                onClick={() => handleEditContent(`hero-slide-${slide._id}`)}
                 className="text-sm font-medium text-blue-600 hover:text-blue-800"
               >
                 تعديل
@@ -63,17 +72,17 @@ const HeroSlides = () => {
               </p>
               <p>
                 <strong>العنوان الفرعي:</strong>{" "}
-                {slide.subtitle
-                  ? slide.subtitle.substring(0, 30) + "..."
+                {slide.subTitle
+                  ? slide.subTitle.substring(0, 30) + "..."
                   : "لا يوجد"}
               </p>
               <p>
-                <strong>نص الزر:</strong> {slide.buttonText}
+                <strong>نص الزر:</strong> {slide.buttonText || "لا يوجد"}
               </p>
             </div>
-            {slide.backgroundImage && (
+            {slide.image && (
               <img
-                src={slide.backgroundImage}
+                src={slide.image}
                 alt={`Hero Slide ${index + 1}`}
                 className="object-cover w-full h-16 mt-3 rounded"
               />
