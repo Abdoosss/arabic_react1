@@ -75,8 +75,6 @@ const productServices = {
 
   createProduct: async (productData) => {
     try {
-      console.log(productData);
-
       const response = await axios.post(
         API.newProduct,
         {
@@ -85,7 +83,7 @@ const productServices = {
           price: Number(productData.price),
           category: productData.category,
           images: productData.images,
-          features: productData.features,
+          itemFeatures: productData.itemFeatures,
         },
         {
           headers: {

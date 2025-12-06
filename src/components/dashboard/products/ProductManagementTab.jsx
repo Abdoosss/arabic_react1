@@ -42,8 +42,9 @@ const ProductManagementTab = ({
     description: "",
     price: "",
     category: "",
-    features: "",
+    itemFeatures: "",
     images: [],
+    isActive: true,
   });
   const [isUploading, setIsUploading] = useState(false);
   const [isEditUploading, setIsEditUploading] = useState(false);
@@ -54,7 +55,7 @@ const ProductManagementTab = ({
       description: "",
       price: "",
       category: categories.length > 0 ? categories[0]._id : "",
-      features: "",
+      itemFeatures: "",
       images: [],
     });
     setIsModalOpen(true);
@@ -99,8 +100,8 @@ const ProductManagementTab = ({
       description: formData.description,
       price: formData.price,
       category: formData.category,
-      features: formData.features
-        ? formData.features
+      itemFeatures: formData.itemFeatures
+        ? formData.itemFeatures
             .split(",")
             .map((f) => f.trim())
             .filter((f) => f)
@@ -116,7 +117,7 @@ const ProductManagementTab = ({
           description: "",
           price: "",
           category: "",
-          features: "",
+          itemFeatures: "",
           images: [],
         });
       },
@@ -130,22 +131,25 @@ const ProductManagementTab = ({
       description: "",
       price: "",
       category: "",
-      features: "",
+      itemFeatures: "",
       images: [],
     });
   };
 
   const handleEditProduct = (product) => {
+    console.log(product);
+
     setEditingProduct(product);
     setEditFormData({
       name: product.name,
       description: product.description,
       price: product.price.toString(),
-      category: product.category._id || product.category,
-      features: Array.isArray(product.features)
-        ? product.features.join(", ")
+      category: product.category._id || product.category.name,
+      itemFeatures: Array.isArray(product.itemFeatures)
+        ? product.itemFeatures.join(", ")
         : "",
       images: product.images || [],
+      isActive: product.isActive !== undefined ? product.isActive : true,
     });
     setIsEditModalOpen(true);
   };
@@ -187,13 +191,14 @@ const ProductManagementTab = ({
       description: editFormData.description,
       price: editFormData.price,
       category: editFormData.category,
-      features: editFormData.features
-        ? editFormData.features
+      itemFeatures: editFormData.itemFeatures
+        ? editFormData.itemFeatures
             .split(",")
             .map((f) => f.trim())
             .filter((f) => f)
         : [],
       images: editFormData.images,
+      isActive: editFormData.isActive,
     };
 
     updateProduct(
@@ -207,8 +212,9 @@ const ProductManagementTab = ({
             description: "",
             price: "",
             category: "",
-            features: "",
+            itemFeatures: "",
             images: [],
+            isActive: true,
           });
         },
       }
@@ -223,8 +229,9 @@ const ProductManagementTab = ({
       description: "",
       price: "",
       category: "",
-      features: "",
+      itemFeatures: "",
       images: [],
+      isActive: true,
     });
   };
 
@@ -410,6 +417,18 @@ const ProductManagementTab = ({
                   </span>
                 </div>
               )}
+              {/* Active Status Badge */}
+              <div className="absolute bottom-3 right-3">
+                <span
+                  className={`px-2 py-1 text-xs font-medium rounded-full ${
+                    product.isActive
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-400 text-white"
+                  }`}
+                >
+                  {product.isActive ? "نشط" : "غير نشط"}
+                </span>
+              </div>
             </div>
 
             {/* Product Info */}
@@ -443,13 +462,13 @@ const ProductManagementTab = ({
               </div>
 
               {/* Features Preview */}
-              {product.features && product.features.length > 0 && (
+              {product.itemFeatures && product.itemFeatures.length > 0 && (
                 <div className="mb-4">
                   <p className="mb-2 text-xs font-medium text-gray-700">
                     المميزات:
                   </p>
                   <div className="flex flex-wrap gap-1">
-                    {product.features.slice(0, 2).map((feature, index) => (
+                    {product.itemFeatures.slice(0, 2).map((feature, index) => (
                       <span
                         key={index}
                         className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded"
@@ -459,9 +478,9 @@ const ProductManagementTab = ({
                           : feature}
                       </span>
                     ))}
-                    {product.features.length > 2 && (
+                    {product.itemFeatures.length > 2 && (
                       <span className="px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
-                        +{product.features.length - 2} أخرى
+                        +{product.itemFeatures.length - 2} أخرى
                       </span>
                     )}
                   </div>
@@ -660,8 +679,8 @@ const ProductManagementTab = ({
             <input
               id="features"
               type="text"
-              name="features"
-              value={formData.features}
+              name="itemFeatures"
+              value={formData.itemFeatures}
               onChange={handleFormChange}
               placeholder="ميزة 1، ميزة 2، ميزة 3"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -834,12 +853,36 @@ const ProductManagementTab = ({
             <input
               id="edit-features"
               type="text"
-              name="features"
-              value={editFormData.features}
+              name="itemFeatures"
+              value={editFormData.itemFeatures}
               onChange={handleEditFormChange}
               placeholder="ميزة 1، ميزة 2، ميزة 3"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+          </div>
+
+          <div>
+            <label
+              htmlFor="edit-isActive"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              حالة المنتج
+            </label>
+            <select
+              id="edit-isActive"
+              name="isActive"
+              value={editFormData.isActive ? "true" : "false"}
+              onChange={(e) =>
+                setEditFormData((prev) => ({
+                  ...prev,
+                  isActive: e.target.value === "true",
+                }))
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="true">نشط - يظهر للعملاء</option>
+              <option value="false">غير نشط - لا يظهر للعملاء</option>
+            </select>
           </div>
 
           <div>
