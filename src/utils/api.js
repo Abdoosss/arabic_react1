@@ -1,5 +1,5 @@
-export const BASE_URL = "https://my-break-furniture-app.vercel.app";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://my-break-furniture-app.vercel.app";
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const API = {
   health: `${BASE_URL}/api/health`,
@@ -40,4 +40,7 @@ export const API = {
     `${BASE_URL}/api/hero-content/update-hero-content/${slideId}`,
   deleteHeroSlide: (slideId) =>
     `${BASE_URL}/api/hero-content/delete-hero-content/${slideId}`,
+  getProductPageSettings: `${BASE_URL}/api/reservation-contact-settings/all`,
+  updateProductPageSettings: (id) =>
+    `${BASE_URL}/api/reservation-contact-settings/${id}`,
 };

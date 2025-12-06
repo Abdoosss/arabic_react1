@@ -5,5 +5,5 @@ export { default as UsersTab } from "./users/UsersTab";
 export { default as BookingsTab } from "./bookings/BookingsTab";
 export { default as MessagesTab } from "./messages/MessagesTab";
 export { default as ProductManagementTab } from "./products/ProductManagementTab";
-export { default as ProductPageTab } from "./ProductPageTab";
+export { default as ProductPageTab } from "./product-page-settings/ProductPageTab";
 export { default as ContentTab } from "./content-management/ContentTab";

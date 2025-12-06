@@ -32,7 +32,6 @@ const Dashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [messages, setMessages] = useState([]);
   const [siteContent, setSiteContent] = useState({});
-  const [productPageSettings, setProductPageSettings] = useState({});
 
   const [showModal, setShowModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
@@ -109,18 +108,7 @@ const Dashboard = () => {
           )}
 
           {/* Product Page Tab */}
-          {activeTab === "product-page" && (
-            <ProductPageTab
-              products={products}
-              productPageSettings={productPageSettings}
-              setProductPageSettings={setProductPageSettings}
-              handleToggleProductPageSetting={() => {
-                /* handler */
-              }}
-              setEditingContent={setEditingContent}
-              setShowContentModal={setShowContentModal}
-            />
-          )}
+          {activeTab === "product-page" && <ProductPageTab />}
 
           {/* Content Tab */}
           {activeTab === "content" && (

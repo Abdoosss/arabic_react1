@@ -155,6 +155,48 @@ const productServices = {
       throw error;
     }
   },
+
+  getProductPageSettings: async () => {
+    try {
+      const response = await axios.get(API.getProductPageSettings);
+
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch product page settings");
+      }
+
+      return response.data.data;
+    } catch (error) {
+      console.error("Error fetching product page settings:", error);
+      throw error;
+    }
+  },
+
+  updateProductPageSettings: async (id, settingsData) => {
+    try {
+      if (!id) {
+        throw new Error("Settings ID is required for update");
+      }
+      const response = await axios.put(
+        API.updateProductPageSettings(id),
+        settingsData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to update product page settings");
+      }
+
+      return response.data.data;
+    } catch (error) {
+      console.error("Error updating product page settings:", error);
+      throw error;
+    }
+  },
 };
 
 export default productServices;
