@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import productServices from "../../../services/apiProducts";
+import productServices from "../../services/apiProducts";
 
 const useProductPageSettings = () => {
   const {

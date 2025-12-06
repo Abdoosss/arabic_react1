@@ -162,7 +162,7 @@ const productServices = {
         throw new Error("Failed to fetch product page settings");
       }
 
-      return response.data.data;
+      return response.data.data[0];
     } catch (error) {
       console.error("Error fetching product page settings:", error);
       throw error;

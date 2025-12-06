@@ -7,19 +7,22 @@ import { toast } from "react-toastify";
 import Modal from "../../components/Modal";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
+import useProduct from "../../hooks/products/useProduct";
+import useProductPageSettings from "../../hooks/products/useProductPageSettings";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
-import useProduct from "../../hooks/products/useProduct";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { addToCart } = useCart();
-  const { isProductError, isProductLoading, product } = useProduct(id);
+  const { product } = useProduct(id);
+  const { productPageSettings: fetchedSettings, isLoading: settingsLoading } =
+    useProductPageSettings();
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -28,89 +31,6 @@ const ProductDetails = () => {
     phone: user?.phone || "",
     message: "",
   });
-  const [productPageSettings, setProductPageSettings] = useState({});
-
-  useEffect(() => {
-    // Deep merge helper
-    const deepMerge = (target, source) => {
-      const output = { ...target };
-      if (
-        target &&
-        source &&
-        typeof target === "object" &&
-        typeof source === "object" &&
-        !Array.isArray(target) &&
-        !Array.isArray(source)
-      ) {
-        Object.keys(source).forEach((key) => {
-          if (
-            source[key] &&
-            typeof source[key] === "object" &&
-            !Array.isArray(source[key])
-          ) {
-            if (!(key in target)) {
-              output[key] = source[key];
-            } else {
-              output[key] = deepMerge(target[key], source[key]);
-            }
-          } else {
-            output[key] = source[key];
-          }
-        });
-      }
-      return output;
-    };
-
-    // Load product page settings from localStorage
-    const savedSettings = JSON.parse(
-      localStorage.getItem("productPageSettings") || "{}"
-    );
-    const defaultSettings = {
-      bookingSection: {
-        title: "احجز الآن أو تواصل معنا",
-        description: "يمكنك حجز هذا المنتج الآن أو التواصل معنا للاستفسار",
-        showBookingButton: true,
-        showWhatsAppButton: true,
-        showPhoneButton: true,
-        showAddToCartButton: true,
-        whatsappNumber: "201234567890",
-        phoneNumber: "+201234567890",
-        bookingFormTitle: "احجز المنتج",
-        bookingFormDescription: "املأ البيانات التالية وسنتواصل معك قريباً",
-      },
-      featuresSection: {
-        title: "المميزات الرئيسية",
-        showFeatures: true,
-        customFeatures: [],
-      },
-      breadcrumb: {
-        showBreadcrumb: true,
-        homeText: "الرئيسية",
-        productsText: "المنتجات",
-      },
-      gallery: {
-        showThumbnails: true,
-        showNavigation: true,
-        showPagination: true,
-        allowZoom: true,
-      },
-    };
-    setProductPageSettings(deepMerge(defaultSettings, savedSettings));
-
-    // Listen for changes in localStorage
-    const handleStorageChange = (e) => {
-      if (e.key === "productPageSettings") {
-        const newSettings = JSON.parse(e.newValue || "{}");
-        setProductPageSettings(deepMerge(defaultSettings, newSettings));
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
 
   useEffect(() => {
     // Update form with user data when user changes
@@ -177,23 +97,6 @@ const ProductDetails = () => {
         return;
       }
 
-      // Save to localStorage as backup
-      const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-      const newBooking = {
-        id: data.reservationId || Date.now(),
-        productId: product.id,
-        productName: product.name,
-        customerName: bookingForm.name,
-        customerEmail: user.email,
-        phone: bookingForm.phone,
-        message: bookingForm.message,
-        status: "pending",
-        createdAt: new Date().toISOString(),
-        userId: user.id,
-      };
-      bookings.push(newBooking);
-      localStorage.setItem("bookings", JSON.stringify(bookings));
-
       toast.success("تم إرسال طلب الحجز بنجاح! سنتواصل معك قريباً");
       setIsBookingModalOpen(false);
       setBookingForm({
@@ -209,8 +112,7 @@ const ProductDetails = () => {
 
   const handleWhatsAppContact = () => {
     const message = `مرحباً، أريد الاستفسار عن ${product.name}`;
-    const whatsappNumber =
-      productPageSettings.bookingSection?.whatsappNumber || "201234567890";
+    const whatsappNumber = fetchedSettings?.whatsappNumber || "201234567890";
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message
     )}`;
@@ -218,8 +120,7 @@ const ProductDetails = () => {
   };
 
   const handlePhoneCall = () => {
-    const phoneNumber =
-      productPageSettings.bookingSection?.phoneNumber || "+201234567890";
+    const phoneNumber = fetchedSettings?.phoneNumber || "+201234567890";
     window.location.href = `tel:${phoneNumber}`;
   };
 
@@ -238,36 +139,35 @@ const ProductDetails = () => {
     <div className="min-h-screen py-8 bg-gray-50">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        {productPageSettings.breadcrumb?.showBreadcrumb && (
-          <motion.nav
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-8"
-          >
-            <ol className="flex items-center space-x-2 space-x-reverse text-sm text-gray-500">
-              <li>
-                <button
-                  onClick={() => navigate("/")}
-                  className="hover:text-primary"
-                >
-                  {productPageSettings.breadcrumb?.homeText || "الرئيسية"}
-                </button>
-              </li>
-              <li>/</li>
-              <li>
-                <button
-                  onClick={() => navigate("/products")}
-                  className="hover:text-primary"
-                >
-                  {productPageSettings.breadcrumb?.productsText || "المنتجات"}
-                </button>
-              </li>
-              <li>/</li>
-              <li className="text-gray-900">{product.name}</li>
-            </ol>
-          </motion.nav>
-        )}
+
+        <motion.nav
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <ol className="flex items-center space-x-2 space-x-reverse text-sm text-gray-500">
+            <li>
+              <button
+                onClick={() => navigate("/")}
+                className="hover:text-primary"
+              >
+                الرئيسية
+              </button>
+            </li>
+            <li>/</li>
+            <li>
+              <button
+                onClick={() => navigate("/products")}
+                className="hover:text-primary"
+              >
+                المنتجات
+              </button>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900">{product.name}</li>
+          </ol>
+        </motion.nav>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {/* Product Images */}
@@ -281,17 +181,9 @@ const ProductDetails = () => {
             <div className="overflow-hidden bg-white rounded-lg shadow-lg">
               <Swiper
                 modules={[Navigation, Pagination, Thumbs]}
-                navigation={productPageSettings.gallery?.showNavigation}
-                pagination={
-                  productPageSettings.gallery?.showPagination
-                    ? { clickable: true }
-                    : false
-                }
-                thumbs={
-                  productPageSettings.gallery?.showThumbnails
-                    ? { swiper: thumbsSwiper }
-                    : false
-                }
+                navigation={true}
+                pagination={{ clickable: true }}
+                thumbs={{ swiper: thumbsSwiper }}
                 className="h-96"
               >
                 {product.images.map((image, index) => (
@@ -307,27 +199,26 @@ const ProductDetails = () => {
             </div>
 
             {/* Thumbnail Slider */}
-            {product.images.length > 1 &&
-              productPageSettings.gallery?.showThumbnails && (
-                <Swiper
-                  modules={[Thumbs]}
-                  onSwiper={setThumbsSwiper}
-                  spaceBetween={10}
-                  slidesPerView={4}
-                  watchSlidesProgress
-                  className="h-20"
-                >
-                  {product.images.map((image, index) => (
-                    <SwiperSlide key={index} className="cursor-pointer">
-                      <img
-                        src={image}
-                        alt={`${product.name} thumbnail ${index + 1}`}
-                        className="object-cover w-full h-full rounded-lg"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              )}
+            {product.images.length > 1 && (
+              <Swiper
+                modules={[Thumbs]}
+                onSwiper={setThumbsSwiper}
+                spaceBetween={10}
+                slidesPerView={4}
+                watchSlidesProgress
+                className="h-20"
+              >
+                {product.images.map((image, index) => (
+                  <SwiperSlide key={index} className="cursor-pointer">
+                    <img
+                      src={image}
+                      alt={`${product.name} thumbnail ${index + 1}`}
+                      className="object-cover w-full h-full rounded-lg"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
           </motion.div>
 
           {/* Product Info */}
@@ -365,11 +256,10 @@ const ProductDetails = () => {
             </div>
 
             {/* Features */}
-            {productPageSettings.featuresSection?.showFeatures && (
+            {product.itemFeatures?.length > 0 && (
               <div>
                 <h3 className="mb-4 text-xl font-semibold text-gray-900">
-                  {productPageSettings.featuresSection?.title ||
-                    "المميزات الرئيسية"}
+                  {fetchedSettings?.featuresTitle || "المميزات الرئيسية"}
                 </h3>
                 <ul className="space-y-3">
                   {product.itemFeatures.map((feature, index) => (
@@ -388,25 +278,6 @@ const ProductDetails = () => {
                       <span className="text-gray-700">{feature}</span>
                     </li>
                   ))}
-                  {/* Custom Features */}
-                  {productPageSettings.featuresSection?.customFeatures?.map(
-                    (feature, index) => (
-                      <li key={`custom-${index}`} className="flex items-center">
-                        <svg
-                          className="flex-shrink-0 w-5 h-5 ml-3 text-primary"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
-                    )
-                  )}
                 </ul>
               </div>
             )}
@@ -414,18 +285,17 @@ const ProductDetails = () => {
             {/* Booking Actions */}
             <div className="p-6 bg-white rounded-lg shadow-lg">
               <h3 className="mb-4 text-xl font-semibold text-gray-900">
-                {productPageSettings.bookingSection?.title ||
-                  "احجز الآن أو تواصل معنا"}
+                احجز الان
               </h3>
 
-              {productPageSettings.bookingSection?.description && (
+              {fetchedSettings?.sectionDescription && (
                 <p className="mb-4 text-gray-600">
-                  {productPageSettings.bookingSection.description}
+                  {fetchedSettings.sectionDescription}
                 </p>
               )}
 
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-                {productPageSettings.bookingSection?.showAddToCartButton && (
+                {fetchedSettings?.displayAddToCartButton && (
                   <button
                     onClick={() => addToCart(product)}
                     className="flex items-center justify-center w-full gap-2 btn-primary"
@@ -447,7 +317,7 @@ const ProductDetails = () => {
                   </button>
                 )}
 
-                {productPageSettings.bookingSection?.showBookingButton && (
+                {fetchedSettings?.displayBookingButton && (
                   <button
                     onClick={() => {
                       if (!user) {
@@ -465,7 +335,7 @@ const ProductDetails = () => {
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {productPageSettings.bookingSection?.showWhatsAppButton && (
+                {fetchedSettings?.displayWhatsappButton && (
                   <button
                     onClick={handleWhatsAppContact}
                     className="flex items-center justify-center w-full btn-secondary"
@@ -481,7 +351,7 @@ const ProductDetails = () => {
                   </button>
                 )}
 
-                {productPageSettings.bookingSection?.showPhoneButton && (
+                {fetchedSettings?.displayPhoneButton && (
                   <button
                     onClick={handlePhoneCall}
                     className="flex items-center justify-center w-full btn-secondary"
@@ -512,9 +382,7 @@ const ProductDetails = () => {
       <Modal
         isOpen={isBookingModalOpen}
         onClose={() => setIsBookingModalOpen(false)}
-        title={
-          productPageSettings.bookingSection?.bookingFormTitle || "احجز المنتج"
-        }
+        title={fetchedSettings?.bookingFormTitle || "احجز المنتج"}
       >
         <form onSubmit={handleBookingSubmit} className="space-y-4">
           <div>

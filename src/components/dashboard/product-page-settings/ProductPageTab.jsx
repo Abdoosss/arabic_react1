@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-import useProductPageSettings from "./useProductPageSettings";
+import useProductPageSettings from "../../../hooks/products/useProductPageSettings";
 import useUpdateProductPageSettings from "./useUpdateProductPageSettings";
 
 const ProductPageTab = () => {
