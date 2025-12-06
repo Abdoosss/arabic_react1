@@ -79,6 +79,26 @@ const categoryServices = {
       throw error;
     }
   },
+
+  deleteCategory: async (categoryId) => {
+    try {
+      const response = await axios.delete(API.deleteCategory(categoryId), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error("Failed to delete category");
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      throw error;
+    }
+  },
 };
 
 export default categoryServices;

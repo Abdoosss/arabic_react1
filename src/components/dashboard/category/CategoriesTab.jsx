@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import useCategories from "./useCategories";
 import useCreateCategory from "./useCreateCategory";
 import useEditCategory from "./useEditCategory";
+import useDeleteCategory from "./useDeleteCategory";
 import Modal from "../../Modal";
 import Loading from "../../Loading";
 import { useState } from "react";
@@ -10,6 +11,7 @@ const CategoriesTab = () => {
   const { categories, isLoading, isError, refetch } = useCategories();
   const { createCategory, isCreating } = useCreateCategory();
   const { editCategory, isEditing } = useEditCategory();
+  const { deleteCategory, isDeleting } = useDeleteCategory();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create"); // "create" or "edit"
   const [formData, setFormData] = useState({ name: "", description: "" });
@@ -30,8 +32,9 @@ const CategoriesTab = () => {
   };
 
   const handleDeleteCategory = (category) => {
-    // TODO: Implement delete category
-    console.log("Delete category:", category._id);
+    if (window.confirm(`هل أنت متأكد من حذف الفئة "${category.name}"؟`)) {
+      deleteCategory(category._id);
+    }
   };
 
   const handleFormChange = (e) => {
@@ -118,8 +121,8 @@ const CategoriesTab = () => {
                 </button>
                 <button
                   onClick={() => handleDeleteCategory(category)}
-                  className="flex-1 px-3 py-2 text-sm text-white transition-colors bg-red-500 rounded hover:bg-red-600"
-                  disabled={categories.length <= 1}
+                  className="flex-1 px-3 py-2 text-sm text-white transition-colors bg-red-500 rounded hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  disabled={categories.length <= 1 || isDeleting}
                 >
                   حذف
                 </button>
