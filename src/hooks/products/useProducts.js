@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import productServices from "../../services/apiProducts";
+import { useSearchParams } from "react-router-dom";
 
 // Hook to fetch categories and products. `category` controls which products are fetched.
 const useProducts = (category = "all") => {
+  const [searchParams] = useSearchParams();
+
   // Fetch categories (with fallback handled in service)
-  const { 
-    data: categories = [], 
+  const {
+    data: categories = [],
     isLoading: isCategoriesLoading,
-    isError: isCategoriesError 
+    isError: isCategoriesError,
   } = useQuery({
     queryKey: ["categories"],
     queryFn: productServices.getAllCategories,
@@ -27,7 +30,7 @@ const useProducts = (category = "all") => {
   } = useQuery({
     // include the category in the key so React Query refetches when it changes
     queryKey: ["products", category],
-    queryFn: () => getProducts(category),
+    queryFn: () => getProducts(category || searchParams.get("category")),
     keepPreviousData: true,
   });
 

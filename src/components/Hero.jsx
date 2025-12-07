@@ -94,7 +94,7 @@ const Hero = () => {
 
               <div className="flex flex-col gap-3 pt-4">
                 <Link
-                  to="/products?category=My Break"
+                  to="/products?category=690deaadead05359ccb451c5"
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold transition-all duration-300 transform bg-white shadow-2xl group/btn text-primary rounded-xl hover:bg-primary hover:text-white hover:scale-105"
                 >
                   استكشف المجموعة
@@ -170,7 +170,7 @@ const Hero = () => {
 
               <div className="flex flex-col gap-3 pt-4">
                 <Link
-                  to="/products?category=Ghassanko"
+                  to="/products?category=690deadaead05359ccb451c9"
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold transition-all duration-300 transform bg-white shadow-2xl group/btn text-amber-900 rounded-xl hover:bg-amber-900 hover:text-white hover:scale-105"
                 >
                   استكشف المجموعة
