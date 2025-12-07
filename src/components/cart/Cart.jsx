@@ -132,7 +132,7 @@ const Cart = () => {
                   <div className="space-y-4">
                     {cartItems.map((item) => (
                       <div
-                        key={item.id}
+                        key={item._id}
                         className="flex items-center gap-5 p-3 space-x-4 space-x-reverse rounded-lg bg-gray-50"
                       >
                         <img
