@@ -23,7 +23,10 @@ import {
 } from "../components/dashboard";
 
 const Dashboard = () => {
-  const { isAdmin, logout } = useAuth();
+  const { isAdmin, user, logout, loading } = useAuth();
+  console.log(user);
+  console.log("isAdmin:", isAdmin);
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("product-management");
   const [products, setProducts] = useState(productsData);
@@ -49,6 +52,17 @@ const Dashboard = () => {
   // ... (نفس الـ useEffect والـ handlers من الملف الأصلي)
   // هنا يتم نسخ كل الـ useEffect والـ handlers من الملف الأصلي
   // لكن بدون تغيير أي لوجيك
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="mb-4 text-4xl">⏳</div>
+          <p className="text-gray-600">جاري التحميل...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAdmin) {
     return (

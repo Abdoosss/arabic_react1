@@ -18,8 +18,15 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setUser(localStorage.getItem("currentUser"));
-    setIsAdmin(localStorage.getItem("isAdmin"));
+    const storedUser = localStorage.getItem("currentUser");
+    const storedIsAdmin = localStorage.getItem("isAdmin");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    if (storedIsAdmin) {
+      setIsAdmin(storedIsAdmin === "true");
+    }
     setLoading(false);
   }, []);
 
@@ -27,12 +34,12 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     setIsAdmin(false); // Reset admin status for regular users
     localStorage.setItem("currentUser", JSON.stringify(userData));
-    localStorage.removeItem("isAdmin"); // Remove admin status
+    localStorage.setItem("isAdmin", "false");
   };
 
   const adminLogin = () => {
     setIsAdmin(true);
-    localStorage.setItem("isAdmin", true);
+    localStorage.setItem("isAdmin", "true");
   };
 
   const logout = () => {
