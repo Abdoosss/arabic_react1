@@ -79,7 +79,7 @@ export const CartProvider = ({ children }) => {
         }
       );
 
-      console.log(response.data.data.items);
+    s
 
       if (response.status === 200) {
         setCartItems(response.data.data.items);

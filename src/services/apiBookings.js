@@ -18,8 +18,6 @@ const bookingServices = {
   },
 
   updateBookingStatus: async (bookingId, newStatus) => {
-    console.log(bookingId, newStatus);
-
     const response = await axios.put(
       API.updateReservationStatus(bookingId),
       newStatus,

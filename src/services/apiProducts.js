@@ -20,8 +20,7 @@ const productServices = {
         : getFallbackCategories();
     } catch (error) {
       console.error("Error fetching categories:", error);
-      console.log("Using fallback categories data");
-      // Return fallback categories on error
+
       return getFallbackCategories();
     }
   },
@@ -42,18 +41,12 @@ const productServices = {
       const products =
         response.data.data || response.data.products || response.data || [];
 
-      console.log(
-        `Fetched products for category "${category}":`,
-        products.length
-      ); // Debug log
-
       return Array.isArray(products) && products.length > 0
         ? products
         : getFallbackProducts(category);
     } catch (error) {
       console.error("Error fetching products:", error);
-      console.log("Using fallback products data");
-      // Return fallback products on error
+
       return getFallbackProducts(category);
     }
   },

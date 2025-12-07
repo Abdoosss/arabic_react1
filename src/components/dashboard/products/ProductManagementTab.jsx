@@ -137,8 +137,6 @@ const ProductManagementTab = ({
   };
 
   const handleEditProduct = (product) => {
-    console.log(product);
-
     setEditingProduct(product);
     setEditFormData({
       name: product.name,

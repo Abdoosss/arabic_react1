@@ -24,8 +24,6 @@ import {
 
 const Dashboard = () => {
   const { isAdmin, user, loading } = useAuth();
-  console.log(user);
-  console.log("isAdmin:", isAdmin);
 
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("product-management");

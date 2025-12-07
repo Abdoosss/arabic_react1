@@ -19,16 +19,9 @@ const categoryServices = {
       const categories =
         response.data.data || response.data.categories || response.data || [];
 
-      //   return Array.isArray(categories) && categories.length > 0
-      //     ? categories
-      //     : getFallbackCategories();
-
       return categories;
     } catch (error) {
       console.error("Error fetching categories:", error);
-      console.log("Using fallback categories data");
-      // Return fallback categories on error
-      //   return getFallbackCategories();
     }
   },
 

@@ -35,7 +35,6 @@ const Login = () => {
       });
 
       const data = response.data;
-      console.log(data);
 
       if (response.status !== 200) {
         toast.error(

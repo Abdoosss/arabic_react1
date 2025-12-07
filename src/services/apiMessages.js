@@ -34,6 +34,8 @@ const messagesServices = {
   },
 
   markMessageAsRead: async (messageId) => {
+    console.log("Marking message as read:", messageId);
+
     const response = await axios.put(
       API.markMessageAsRead(messageId),
       {},

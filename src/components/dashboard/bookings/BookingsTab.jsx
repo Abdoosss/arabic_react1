@@ -9,12 +9,8 @@ const BookingsTab = () => {
   const { bookings, isLoading, isError, refetch } = useBookings();
   const { updateBooking, isUpdating } = useUpdateBooking();
 
-  console.log(bookings);
-
   const handleUpdateBookingStatus = (bookingId, newStatus) => {
     try {
-      console.log(bookingId, newStatus);
-
       updateBooking(
         { bookingId, updatedData: { status: newStatus } },
         {
