@@ -1,4 +1,3 @@
-// export const BASE_URL = "https://my-break-furniture-app.vercel.app";
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const API = {
