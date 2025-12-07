@@ -23,7 +23,7 @@ import {
 } from "../components/dashboard";
 
 const Dashboard = () => {
-  const { isAdmin, user, logout, loading } = useAuth();
+  const { isAdmin, user, loading } = useAuth();
   console.log(user);
   console.log("isAdmin:", isAdmin);
 
@@ -85,7 +85,7 @@ const Dashboard = () => {
     <div className="min-h-screen py-8 bg-gray-50">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header Component */}
-        <DashboardHeader logout={logout} />
+        <DashboardHeader />
 
         {/* Tabs Component */}
         <DashboardTabs activeTab={activeTab} setActiveTab={setActiveTab} />
