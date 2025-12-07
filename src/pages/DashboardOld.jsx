@@ -335,8 +335,8 @@ const Dashboard = () => {
         showWhatsAppButton: true,
         showPhoneButton: true,
         showAddToCartButton: true,
-        whatsappNumber: "201234567890",
-        phoneNumber: "+201234567890",
+        whatsappNumber: "201143396040",
+        phoneNumber: "+201143396040",
         bookingFormTitle: "احجز المنتج",
         bookingFormDescription: "املأ البيانات التالية وسنتواصل معك قريباً",
       },
@@ -2015,7 +2015,7 @@ const Dashboard = () => {
                             );
                           }}
                           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="201234567890"
+                          placeholder="201143396040"
                         />
                       </div>
                       <div className="p-3 rounded-lg bg-blue-50">
@@ -2043,7 +2043,7 @@ const Dashboard = () => {
                             );
                           }}
                           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="+201234567890"
+                          placeholder="+201143396040"
                         />
                       </div>
                       <div className="p-3 rounded-lg bg-blue-50">

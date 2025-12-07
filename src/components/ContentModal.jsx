@@ -596,7 +596,7 @@ const ContentModal = ({ isOpen, content, onSave, onClose }) => {
                                     value={formData.whatsappNumber || ''}
                                     onChange={(e) => handleChange('whatsappNumber', e.target.value)}
                                     className="input-field"
-                                    placeholder="201234567890"
+                                    placeholder="201143396040"
                                 />
                             </div>
 
@@ -609,7 +609,7 @@ const ContentModal = ({ isOpen, content, onSave, onClose }) => {
                                     value={formData.phoneNumber || ''}
                                     onChange={(e) => handleChange('phoneNumber', e.target.value)}
                                     className="input-field"
-                                    placeholder="+201234567890"
+                                    placeholder="+201143396040"
                                 />
                             </div>
 
