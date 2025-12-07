@@ -1,0 +1,71 @@
+[
+  {
+    "id": 1,
+    "name": "كنبة ماي بريك الفاخرة",
+    "category": "My Break",
+    "type": "sofa",
+    "price": "15000",
+    "description": "كنبة فاخرة مصنوعة من أجود أنواع الجلد الطبيعي مع تصميم عصري يناسب جميع المنازل",
+    "features": ["جلد طبيعي 100%", "إطار خشبي قوي", "وسائد مريحة", "ضمان 5 سنوات"],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800",
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800",
+      "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800"
+    ],
+    "featured": true
+  },
+  {
+    "id": 2,
+    "name": "كرسي لايزي بوي الملكي",
+    "category": "My Break",
+    "type": "lazy-boy",
+    "price": "8500",
+    "description": "كرسي استرخاء فاخر مع خاصية الاستلقاء الكامل ومساج مدمج",
+    "features": ["مساج مدمج", "استلقاء كامل", "جلد فاخر", "تحكم كهربائي"],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800",
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
+    ],
+    "featured": true
+  },
+  {
+    "id": 3,
+    "name": "طقم صالون غسانكو",
+    "category": "Ghassanko",
+    "type": "dining-set",
+    "price": "12000",
+    "description": "طقم صالون أنيق مكون من 6 كراسي وطاولة من الخشب الطبيعي",
+    "features": ["خشب طبيعي", "تصميم كلاسيكي", "6 كراسي مريحة", "طاولة قابلة للتمديد"],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800"
+    ],
+    "featured": false
+  },
+  {
+    "id": 4,
+    "name": "كنبة ماي بريك المودرن",
+    "category": "My Break",
+    "type": "sofa",
+    "price": "18000",
+    "description": "كنبة عصرية بتصميم مودرن مع إضاءة LED مدمجة",
+    "features": ["إضاءة LED", "تصميم مودرن", "قماش مقاوم للبقع", "USB شاحن مدمج"],
+    "images": [
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800",
+      "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800"
+    ],
+    "featured": true
+  },
+  {
+    "id": 5,
+    "name": "مكتبة غسانكو الكلاسيكية",
+    "category": "Ghassanko",
+    "type": "bookshelf",
+    "price": "7500",
+    "description": "مكتبة خشبية كلاسيكية بتصميم أنيق لتنظيم الكتب والديكورات",
+    "features": ["خشب البلوط", "5 أرفف واسعة", "تصميم كلاسيكي", "سهولة التركيب"],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800"
+    ],
+    "featured": false
+  }
+]
