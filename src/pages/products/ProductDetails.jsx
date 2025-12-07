@@ -112,11 +112,7 @@ const ProductDetails = () => {
 
   const handleWhatsAppContact = () => {
     const message = `مرحباً، أريد الاستفسار عن ${product.name}`;
-<<<<<<< HEAD
     const whatsappNumber = fetchedSettings?.whatsappNumber || "201234567890";
-=======
-    const whatsappNumber = "201143396040";
->>>>>>> master
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message
     )}`;
@@ -124,11 +120,7 @@ const ProductDetails = () => {
   };
 
   const handlePhoneCall = () => {
-<<<<<<< HEAD
     const phoneNumber = fetchedSettings?.phoneNumber || "+201234567890";
-=======
-    const phoneNumber = "+201143396040";
->>>>>>> master
     window.location.href = `tel:${phoneNumber}`;
   };
 

@@ -251,11 +251,7 @@ const ProductPageTab = () => {
                 }}
                 onBlur={handleBlurUpdate}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-<<<<<<< HEAD
-                placeholder="201234567890"
-=======
                 placeholder="201143396040"
->>>>>>> master
               />
             </div>
             <div className="p-3 rounded-lg bg-blue-50">
@@ -273,11 +269,7 @@ const ProductPageTab = () => {
                 }}
                 onBlur={handleBlurUpdate}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-<<<<<<< HEAD
-                placeholder="+201234567890"
-=======
                 placeholder="+201143396040"
->>>>>>> master
               />
             </div>
             <div className="p-3 rounded-lg bg-blue-50">
