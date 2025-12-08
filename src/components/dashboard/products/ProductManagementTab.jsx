@@ -686,8 +686,13 @@ const ProductManagementTab = ({
               >
                 <option value="">اختر النوع</option>
                 {(() => {
-                  const selectedCat = categories.find(c => c._id === formData.category);
-                  if (selectedCat?.name === "My Break" || selectedCat?.name === "ماي بريك") {
+                  const selectedCat = categories.find(
+                    (c) => c._id === formData.category
+                  );
+                  if (
+                    selectedCat?.name === "My Break" ||
+                    selectedCat?.name === "ماي بريك"
+                  ) {
                     return (
                       <>
                         <option value="كرسي كهربا">كرسي كهربا</option>
@@ -696,7 +701,10 @@ const ProductManagementTab = ({
                         <option value="انتريه ماي بريك">انتريه ماي بريك</option>
                       </>
                     );
-                  } else if (selectedCat?.name === "Ghassanko" || selectedCat?.name === "غسانكو") {
+                  } else if (
+                    selectedCat?.name === "Ghassanko" ||
+                    selectedCat?.name === "غسانكو"
+                  ) {
                     return (
                       <>
                         <option value="ركنة">ركنة</option>
@@ -901,8 +909,13 @@ const ProductManagementTab = ({
               >
                 <option value="">اختر النوع</option>
                 {(() => {
-                  const selectedCat = categories.find(c => c._id === editFormData.category);
-                  if (selectedCat?.name === "My Break" || selectedCat?.name === "ماي بريك") {
+                  const selectedCat = categories.find(
+                    (c) => c._id === editFormData.category
+                  );
+                  if (
+                    selectedCat?.name === "My Break" ||
+                    selectedCat?.name === "ماي بريك"
+                  ) {
                     return (
                       <>
                         <option value="كرسي كهربا">كرسي كهربا</option>
@@ -911,7 +924,10 @@ const ProductManagementTab = ({
                         <option value="انتريه ماي بريك">انتريه ماي بريك</option>
                       </>
                     );
-                  } else if (selectedCat?.name === "Ghassanko" || selectedCat?.name === "غسانكو") {
+                  } else if (
+                    selectedCat?.name === "Ghassanko" ||
+                    selectedCat?.name === "غسانكو"
+                  ) {
                     return (
                       <>
                         <option value="ركنة">ركنة</option>

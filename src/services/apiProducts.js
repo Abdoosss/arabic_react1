@@ -107,7 +107,8 @@ const productServices = {
           price: Number(productData.price),
           category: productData.category,
           images: productData.images,
-          features: productData.features,
+          itemFeatures: productData.itemFeatures,
+          isActive: productData.isActive,
         },
         {
           headers: {
