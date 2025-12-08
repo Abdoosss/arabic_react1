@@ -12,6 +12,7 @@ const Products = () => {
     searchParams.get("category") || "all"
   );
   const [sortBy, setSortBy] = useState("name");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("all");
 
   const {
     categories,
@@ -21,29 +22,51 @@ const Products = () => {
     refetchProducts,
   } = useProducts(selectedCategory);
 
-  // client-side sorted products (memoized)
+  // client-side sorted and filtered products (memoized)
   const sortedProducts = useMemo(() => {
     if (!Array.isArray(products)) return [];
-    const copy = [...products];
+    let copy = [...products];
+    
+    // Filter by sub-category if selected
+    if (selectedSubCategory !== "all") {
+      copy = copy.filter(product => 
+        product.subCategory === selectedSubCategory || 
+        product.name?.includes(selectedSubCategory)
+      );
+    }
+    
+    // Sort
     switch (sortBy) {
-      case "price-low":
-        copy.sort((a, b) => parseInt(a.price) - parseInt(b.price));
-        break;
-      case "price-high":
-        copy.sort((a, b) => parseInt(b.price) - parseInt(a.price));
-        break;
       case "name":
       default:
         copy.sort((a, b) => (a.name || "").localeCompare(b.name || "", "ar"));
         break;
     }
     return copy;
-  }, [products, sortBy]);
+  }, [products, sortBy, selectedSubCategory]);
+
+  const getSubCategories = () => {
+    const category = categories.find(c => c._id === selectedCategory);
+    if (!category) return [];
+    
+    if (category.name === "My Break" || category.name === "ماي بريك") {
+      return [
+        { value: "كرسي كهربا", label: "كرسي كهربا" },
+        { value: "كرسي عادي", label: "كرسي عادي" },
+        { value: "ركنة ماي بريك", label: "ركنة ماي بريك" },
+        { value: "انتريه ماي بريك", label: "انتريه ماي بريك" },
+      ];
+    } else if (category.name === "Ghassanko" || category.name === "غسانكو") {
+      return [
+        { value: "ركنة", label: "ركنة" },
+        { value: "انتريه", label: "انتريه" },
+      ];
+    }
+    return [];
+  };
 
   const sortOptions = [
     { value: "name", label: "الاسم" },
-    { value: "price-low", label: "السعر: من الأقل للأعلى" },
-    { value: "price-high", label: "السعر: من الأعلى للأقل" },
   ];
 
   return (
@@ -104,24 +127,41 @@ const Products = () => {
               </div>
             </div>
 
-            {/* Sort Options */}
-            <div className="flex items-center gap-4">
-              <label className="font-medium text-gray-700 whitespace-nowrap">
-                ترتيب حسب:
-              </label>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="input-field min-w-[200px]"
-              >
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
           </div>
+          
+          {/* Sub-category Filter */}
+          {getSubCategories().length > 0 && (
+            <div className="flex flex-col items-center gap-4 mt-4 sm:flex-row">
+              <label className="font-medium text-gray-700 whitespace-nowrap">
+                النوع:
+              </label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedSubCategory("all")}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedSubCategory === "all"
+                      ? "bg-primary text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  الكل
+                </button>
+                {getSubCategories().map((subCat) => (
+                  <button
+                    key={subCat.value}
+                    onClick={() => setSelectedSubCategory(subCat.value)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      selectedSubCategory === subCat.value
+                        ? "bg-primary text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {subCat.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Results Count */}
           <div className="pt-4 mt-4 border-t border-gray-200">

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
+// Import local images
+import myBreakImg from '../assets/my break/1230113.jpg';
+import ghassankoImg from '../assets/ghassanko/ChatGPT Image Oct 13, 2025, 08_33_08 PM.png';
+import storyImg from '../assets/my break/ChatGPT Image Jun 22, 2025, 07_53_27 PM.jpg';
+
 const About = () => {
   const [siteContent, setSiteContent] = useState({});
 
@@ -36,7 +41,7 @@ const About = () => {
         story: {
           title: 'قصتنا',
           content: 'بدأت رحلتنا منذ أكثر من 20 عاماً بحلم بسيط: تقديم أثاث عالي الجودة يجمع بين الراحة والأناقة والمتانة. من ورشة صغيرة إلى شركة رائدة في السوق المصري.',
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=400&fit=crop'
+          image: storyImg
         }
       }
     };
@@ -107,7 +112,7 @@ const About = () => {
             </div>
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=400&fit=crop"
+                src={storyImg}
                 alt="قصتنا"
                 className="rounded-lg shadow-lg w-full"
               />
@@ -127,7 +132,7 @@ const About = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
                 <img
-                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop"
+                  src={myBreakImg}
                   alt="مجموعة ماي بريك"
                   className="rounded-lg shadow-md w-full"
                 />
@@ -183,7 +188,7 @@ const About = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <img
-                  src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&h=400&fit=crop"
+                  src={ghassankoImg}
                   alt="مجموعة غسانكو"
                   className="rounded-lg shadow-md w-full"
                 />

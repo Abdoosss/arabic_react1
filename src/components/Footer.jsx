@@ -214,7 +214,7 @@ const Footer = () => {
                   />
                 </svg>
                 <span className="text-gray-300">
-                  info@mybreak-ghassanko.com
+                  mybreakghassanco@gmail.com
                 </span>
               </div>
             </div>

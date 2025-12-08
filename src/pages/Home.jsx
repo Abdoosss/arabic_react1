@@ -7,6 +7,20 @@ import ProductCard from "../components/ProductCard";
 import { API } from "../utils/api";
 import useProducts from "../hooks/products/useProducts";
 
+// Fallback images from assets
+const myBreakImages = [
+  new URL("../assets/my break/1230113.jpg", import.meta.url).href,
+  new URL("../assets/my break/1e0eafa9-2d93-4f7b-8d71-893fdeae8d52.jpg", import.meta.url).href,
+  new URL("../assets/my break/ChatGPT Image Jun 22, 2025, 07_53_27 PM.jpg", import.meta.url).href,
+];
+
+const ghassankoImages = [
+  new URL("../assets/ghassanko/ChatGPT Image Oct 13, 2025, 08_33_08 PM.png", import.meta.url).href,
+  new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذا_الاثاث_في_منز (1).png", import.meta.url).href,
+  new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذا_الاثاث_في_منز (7).png", import.meta.url).href,
+  new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذه_الكنبة_في_منز (1).png", import.meta.url).href,
+];
+
 const Home = () => {
   const [siteContent, setSiteContent] = useState({});
   const { products } = useProducts();
@@ -278,9 +292,9 @@ const Home = () => {
               viewport={{ once: true }}
               className="grid grid-cols-2 gap-4"
             >
-              {myBreakProducts.slice(0, 4).map((product, index) => (
+              {(myBreakProducts.length > 0 ? myBreakProducts.slice(0, 4) : myBreakImages.map((img, i) => ({ id: i, images: [img], name: 'ماي بريك' }))).map((product, index) => (
                 <motion.div
-                  key={product.id}
+                  key={product.id || index}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -296,10 +310,7 @@ const Home = () => {
                   </div>
                   <div className="absolute inset-0 flex items-end transition-all duration-300 opacity-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:opacity-100">
                     <div className="p-4 text-white transition-transform duration-300 transform translate-y-4 group-hover:translate-y-0">
-                      <h4 className="mb-1 text-lg font-bold">{product.name}</h4>
-                      <p className="text-sm font-semibold text-primary-light">
-                        {product.price} جنيه
-                      </p>
+                      <h4 className="text-lg font-bold">{product.name}</h4>
                     </div>
                   </div>
                 </motion.div>
@@ -333,9 +344,9 @@ const Home = () => {
               className="order-2 lg:order-1"
             >
               <div className="grid grid-cols-2 gap-4">
-                {ghassankoProducts.slice(0, 4).map((product, index) => (
+                {(ghassankoProducts.length > 0 ? ghassankoProducts.slice(0, 4) : ghassankoImages.map((img, i) => ({ id: i, images: [img], name: 'غسانكو' }))).map((product, index) => (
                   <motion.div
-                    key={product.id}
+                    key={product.id || index}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -351,12 +362,9 @@ const Home = () => {
                     </div>
                     <div className="absolute inset-0 flex items-end transition-all duration-300 opacity-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:opacity-100">
                       <div className="p-4 text-white transition-transform duration-300 transform translate-y-4 group-hover:translate-y-0">
-                        <h4 className="mb-1 text-lg font-bold">
+                        <h4 className="text-lg font-bold">
                           {product.name}
                         </h4>
-                        <p className="text-sm font-semibold text-primary-light">
-                          {product.price} جنيه
-                        </p>
                       </div>
                     </div>
                   </motion.div>

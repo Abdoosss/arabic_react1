@@ -10,7 +10,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, logout } = useAuth();
-  const { getTotalItems, setIsCartOpen } = useCart();
+  const { cartItems, getTotalItems, setIsCartOpen } = useCart();
   const { siteContent } = useSiteContent();
 
   const navItems = [
@@ -93,10 +93,16 @@ const Navbar = () => {
                   d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z"
                 />
               </svg>
-              {getTotalItems() > 0 && (
-                <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white rounded-full -top-1 -right-1 bg-primary">
+              {cartItems.length > 0 && (
+                <motion.span
+                  key={cartItems.length}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                  className="absolute flex items-center justify-center w-5 h-5 text-xs text-white rounded-full -top-1 -right-1 bg-primary"
+                >
                   {getTotalItems()}
-                </span>
+                </motion.span>
               )}
             </button>
             {user ? (

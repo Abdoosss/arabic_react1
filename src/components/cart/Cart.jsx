@@ -144,9 +144,6 @@ const Cart = () => {
                           <h3 className="text-sm font-medium text-gray-900">
                             {item.product.name}
                           </h3>
-                          <p className="font-semibold text-primary">
-                            {item.product.price} جنيه
-                          </p>
                           <div className="flex items-center mt-2">
                             <button
                               onClick={() =>
@@ -202,15 +199,6 @@ const Cart = () => {
               {/* Footer */}
               {cartItems.length > 0 && (
                 <div className="p-4 space-y-4 border-t">
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-semibold text-gray-900">
-                      المجموع:
-                    </span>
-                    <span className="text-lg font-bold text-primary">
-                      {formatPrice(getTotalPrice())} جنيه
-                    </span>
-                  </div>
-
                   <div className="space-y-2">
                     <button
                       onClick={() => {
@@ -316,19 +304,10 @@ const Cart = () => {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex justify-between">
                   <span>
-                    {item.name} × {item.quantity}
-                  </span>
-                  <span>
-                    {formatPrice(parseFloat(item.price) * item.quantity)} جنيه
+                    {item.product.name} × {item.quantity}
                   </span>
                 </div>
               ))}
-              <div className="flex justify-between pt-2 font-semibold border-t">
-                <span>المجموع الكلي:</span>
-                <span className="text-primary">
-                  {formatPrice(getTotalPrice())} جنيه
-                </span>
-              </div>
             </div>
           </div>
 

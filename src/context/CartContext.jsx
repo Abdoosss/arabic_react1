@@ -79,16 +79,24 @@ export const CartProvider = ({ children }) => {
         }
       );
 
-    s
-
       if (response.status === 200) {
-        setCartItems(response.data.data.items);
+        // Force immediate state update
+        const newItems = response.data.data.items;
+        setCartItems([...newItems]);
+        
+        // Show success message
         toast.success(`تمت إضافة ${product.name} إلى العربة`);
+        
+        // Open cart to show immediate feedback
+        setTimeout(() => {
+          setIsCartOpen(true);
+        }, 100);
       } else {
         throw new Error("Failed to add item to cart");
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
+      toast.error("حدث خطأ أثناء إضافة المنتج للعربة");
     }
   };
 

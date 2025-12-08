@@ -34,6 +34,7 @@ const ProductManagementTab = ({
     description: "",
     price: "",
     category: "",
+    subCategory: "",
     features: "",
     images: [], // Stores uploaded image URLs
   });
@@ -42,6 +43,7 @@ const ProductManagementTab = ({
     description: "",
     price: "",
     category: "",
+    subCategory: "",
     itemFeatures: "",
     images: [],
     isActive: true,
@@ -667,6 +669,47 @@ const ProductManagementTab = ({
             </select>
           </div>
 
+          {formData.category && (
+            <div>
+              <label
+                htmlFor="subCategory"
+                className="block mb-1 text-sm font-medium text-gray-700"
+              >
+                النوع
+              </label>
+              <select
+                id="subCategory"
+                name="subCategory"
+                value={formData.subCategory}
+                onChange={handleFormChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">اختر النوع</option>
+                {(() => {
+                  const selectedCat = categories.find(c => c._id === formData.category);
+                  if (selectedCat?.name === "My Break" || selectedCat?.name === "ماي بريك") {
+                    return (
+                      <>
+                        <option value="كرسي كهربا">كرسي كهربا</option>
+                        <option value="كرسي عادي">كرسي عادي</option>
+                        <option value="ركنة ماي بريك">ركنة ماي بريك</option>
+                        <option value="انتريه ماي بريك">انتريه ماي بريك</option>
+                      </>
+                    );
+                  } else if (selectedCat?.name === "Ghassanko" || selectedCat?.name === "غسانكو") {
+                    return (
+                      <>
+                        <option value="ركنة">ركنة</option>
+                        <option value="انتريه">انتريه</option>
+                      </>
+                    );
+                  }
+                  return null;
+                })()}
+              </select>
+            </div>
+          )}
+
           <div>
             <label
               htmlFor="features"
@@ -840,6 +883,47 @@ const ProductManagementTab = ({
               ))}
             </select>
           </div>
+
+          {editFormData.category && (
+            <div>
+              <label
+                htmlFor="edit-subCategory"
+                className="block mb-1 text-sm font-medium text-gray-700"
+              >
+                النوع
+              </label>
+              <select
+                id="edit-subCategory"
+                name="subCategory"
+                value={editFormData.subCategory}
+                onChange={handleEditFormChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">اختر النوع</option>
+                {(() => {
+                  const selectedCat = categories.find(c => c._id === editFormData.category);
+                  if (selectedCat?.name === "My Break" || selectedCat?.name === "ماي بريك") {
+                    return (
+                      <>
+                        <option value="كرسي كهربا">كرسي كهربا</option>
+                        <option value="كرسي عادي">كرسي عادي</option>
+                        <option value="ركنة ماي بريك">ركنة ماي بريك</option>
+                        <option value="انتريه ماي بريك">انتريه ماي بريك</option>
+                      </>
+                    );
+                  } else if (selectedCat?.name === "Ghassanko" || selectedCat?.name === "غسانكو") {
+                    return (
+                      <>
+                        <option value="ركنة">ركنة</option>
+                        <option value="انتريه">انتريه</option>
+                      </>
+                    );
+                  }
+                  return null;
+                })()}
+              </select>
+            </div>
+          )}
 
           <div>
             <label

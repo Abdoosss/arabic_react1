@@ -243,10 +243,6 @@ const ProductDetails = () => {
               <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
                 {product.name}
               </h1>
-
-              <div className="mb-6 text-3xl font-bold text-primary">
-                {product.price} جنيه
-              </div>
             </div>
 
             <div className="prose prose-lg max-w-none">

@@ -44,9 +44,6 @@ const ProductCard = ({ product }) => {
           <span className="px-2 py-1 text-sm text-gray-500 bg-gray-100 rounded">
             {product.category.name}
           </span>
-          <span className="text-lg font-bold text-primary">
-            {product.price} جنيه
-          </span>
         </div>
 
         <h3 className="mb-3 text-xl font-semibold text-gray-800 transition-colors group-hover:text-primary">
