@@ -9,50 +9,74 @@ import "swiper/css/effect-fade";
 const Hero = () => {
   // Use direct paths for images
   const myBreakSlides = [
-    { 
-      id: 1, 
+    {
+      id: 1,
       image: new URL("../assets/my break/1230113.jpg", import.meta.url).href,
-      title: "ماي بريك", 
-      subtitle: "الراحة والفخامة" 
+      title: "ماي بريك",
+      subtitle: "الراحة والفخامة"
     },
-    { 
-      id: 2, 
+    {
+      id: 2,
       image: new URL("../assets/my break/1e0eafa9-2d93-4f7b-8d71-893fdeae8d52.jpg", import.meta.url).href,
-      title: "ماي بريك", 
-      subtitle: "تصاميم عصرية" 
+      title: "ماي بريك",
+      subtitle: "تصاميم عصرية"
     },
-    { 
-      id: 3, 
+    {
+      id: 3,
       image: new URL("../assets/my break/ChatGPT Image Jun 22, 2025, 07_53_27 PM.jpg", import.meta.url).href,
-      title: "ماي بريك", 
-      subtitle: "جودة استثنائية" 
+      title: "ماي بريك",
+      subtitle: "جودة استثنائية"
     },
   ];
 
   const ghassankoSlides = [
-    { 
-      id: 1, 
+    {
+      id: 1,
       image: new URL("../assets/ghassanko/ChatGPT Image Oct 13, 2025, 08_33_08 PM.png", import.meta.url).href,
-      title: "غسانكو", 
-      subtitle: "الأناقة الكلاسيكية" 
+      title: "غسانكو",
+      subtitle: "الأناقة الكلاسيكية"
     },
-    { 
-      id: 2, 
+    {
+      id: 2,
       image: new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذا_الاثاث_في_منز (1).png", import.meta.url).href,
-      title: "غسانكو", 
-      subtitle: "حرفية متقنة" 
+      title: "غسانكو",
+      subtitle: "حرفية متقنة"
     },
-    { 
-      id: 3, 
+    {
+      id: 3,
       image: new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذا_الاثاث_في_منز (7).png", import.meta.url).href,
-      title: "غسانكو", 
-      subtitle: "تصاميم خالدة" 
+      title: "غسانكو",
+      subtitle: "تصاميم خالدة"
     },
-    { 
-      id: 4, 
+    {
+      id: 4,
+      image: new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذا_الاثاث_في_منز.png", import.meta.url).href,
+      title: "غسانكو",
+      subtitle: "فخامة كلاسيكية"
+    },
+    {
+      id: 5,
+      image: new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذه_الكراسي_في_من.png", import.meta.url).href,
+      title: "غسانكو",
+      subtitle: "تصاميم راقية"
+    },
+    {
+      id: 6,
       image: new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذه_الكنبة_في_منز (1).png", import.meta.url).href,
-      title: "غسانكو", 
-      subtitle: "فخامة كلاسيكية" 
+      title: "غسانكو",
+      subtitle: "أثاث فاخر"
+    },
+    {
+      id: 7,
+      image: new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضع_هذه_الكنبة_في_منز.png", import.meta.url).href,
+      title: "غسانكو",
+      subtitle: "جودة عالية"
+    },
+    {
+      id: 8,
+      image: new URL("../assets/ghassanko/gemini-2.5-flash-image-preview (nano-banana)_a_ضعها_في_منزل_به_ديكو (1).png", import.meta.url).href,
+      title: "غسانكو",
+      subtitle: "إبداع وتميز"
     },
   ];
 
@@ -65,10 +89,10 @@ const Hero = () => {
             modules={[Autoplay, EffectFade]}
             effect="fade"
             fadeEffect={{ crossFade: true }}
-            autoplay={{ 
-              delay: 3000, 
+            autoplay={{
+              delay: 3000,
               disableOnInteraction: false,
-              pauseOnMouseEnter: false 
+              pauseOnMouseEnter: false
             }}
             loop={true}
             speed={800}
@@ -147,10 +171,10 @@ const Hero = () => {
             modules={[Autoplay, EffectFade]}
             effect="fade"
             fadeEffect={{ crossFade: true }}
-            autoplay={{ 
-              delay: 3500, 
+            autoplay={{
+              delay: 3500,
               disableOnInteraction: false,
-              pauseOnMouseEnter: false 
+              pauseOnMouseEnter: false
             }}
             loop={true}
             speed={800}
@@ -159,12 +183,12 @@ const Hero = () => {
             {ghassankoSlides.map((slide) => (
               <SwiperSlide key={slide.id}>
                 <div className="relative h-full">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transform group-hover:scale-105 transition-transform duration-700"
-                    style={{ backgroundImage: `url(${slide.image})` }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-bl from-amber-900/60 to-black/50"></div>
-                  </div>
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-bl from-amber-900/60 to-black/50"></div>
                 </div>
               </SwiperSlide>
             ))}
