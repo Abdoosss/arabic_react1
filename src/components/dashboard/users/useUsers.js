@@ -11,9 +11,6 @@ const useUsers = () => {
     queryKey: ["users"],
     queryFn: userServices.fetchAllUsersForAdmin,
     staleTime: 60 * 1000, // 1 minute
-    onError: (error) => {
-      console.error("Error fetching users:", error);
-    },
   });
 
   return {
