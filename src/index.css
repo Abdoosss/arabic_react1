@@ -287,3 +287,72 @@ gle Switch Styles */
 .success-animation {
   animation: successPulse 0.3s ease-in-out;
 }
+
+/* Product Details Image Gallery Styles */
+.product-main-swiper .swiper-button-next,
+.product-main-swiper .swiper-button-prev {
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.product-main-swiper .swiper-button-next:hover,
+.product-main-swiper .swiper-button-prev:hover {
+  background-color: #8E7AB5;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(142, 122, 181, 0.4);
+}
+
+.product-main-swiper .swiper-button-next:hover::after,
+.product-main-swiper .swiper-button-prev:hover::after {
+  color: white;
+}
+
+.product-main-swiper .swiper-button-next::after,
+.product-main-swiper .swiper-button-prev::after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.product-main-swiper .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(142, 122, 181, 0.3);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.product-main-swiper .swiper-pagination-bullet-active {
+  background-color: #8E7AB5;
+  width: 32px;
+  border-radius: 6px;
+}
+
+.product-main-swiper .swiper-pagination-bullet:hover {
+  background-color: rgba(142, 122, 181, 0.6);
+  transform: scale(1.2);
+}
+
+/* Thumbnail Active State */
+.product-thumbs-swiper .swiper-slide-thumb-active > div {
+  border-color: #8E7AB5 !important;
+  box-shadow: 0 4px 12px rgba(142, 122, 181, 0.3) !important;
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-main-swiper .swiper-button-next,
+  .product-main-swiper .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .product-main-swiper .swiper-button-next::after,
+  .product-main-swiper .swiper-button-prev::after {
+    font-size: 16px;
+  }
+}

@@ -178,21 +178,23 @@ const ProductDetails = () => {
             className="space-y-4"
           >
             {/* Main Image Slider */}
-            <div className="overflow-hidden bg-white rounded-lg shadow-lg">
+            <div className="overflow-hidden rounded-2xl shadow-2xl">
               <Swiper
                 modules={[Navigation, Pagination, Thumbs]}
-                navigation={true}
+                navigation={false}
                 pagination={{ clickable: true }}
                 thumbs={{ swiper: thumbsSwiper }}
-                className="h-96"
+                className="product-main-swiper"
               >
                 {product.images.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <img
-                      src={image}
-                      alt={`${product.name} - ${index + 1}`}
-                      className="object-cover w-full h-full"
-                    />
+                    <div className="w-full aspect-[16/9] bg-white">
+                      <img
+                        src={image}
+                        alt={`${product.name} - ${index + 1}`}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -203,18 +205,21 @@ const ProductDetails = () => {
               <Swiper
                 modules={[Thumbs]}
                 onSwiper={setThumbsSwiper}
-                spaceBetween={10}
+                spaceBetween={12}
                 slidesPerView={4}
                 watchSlidesProgress
-                className="h-20"
+                className="product-thumbs-swiper h-28"
               >
                 {product.images.map((image, index) => (
-                  <SwiperSlide key={index} className="cursor-pointer">
-                    <img
-                      src={image}
-                      alt={`${product.name} thumbnail ${index + 1}`}
-                      className="object-cover w-full h-full rounded-lg"
-                    />
+                  <SwiperSlide key={index} className="cursor-pointer group">
+                    <div className="relative h-full overflow-hidden transition-all duration-300 bg-white border-2 border-gray-200 rounded-xl group-hover:border-primary group-hover:shadow-lg">
+                      <img
+                        src={image}
+                        alt={`${product.name} thumbnail ${index + 1}`}
+                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-primary/10 group-hover:opacity-100"></div>
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
