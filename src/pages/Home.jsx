@@ -264,7 +264,7 @@ const Home = () => {
                 viewport={{ once: true }}
               >
                 <Link
-                  to="/products?category=My Break"
+                  to="/products?category=690deaadead05359ccb451c5"
                   className="inline-flex items-center gap-2 px-8 py-4 text-lg transition-all duration-300 transform shadow-lg btn-primary hover:shadow-xl hover:-translate-y-1"
                 >
                   {siteContent.myBreak?.buttonText || "استكشف مجموعة ماي بريك"}
@@ -438,7 +438,7 @@ const Home = () => {
                 viewport={{ once: true }}
               >
                 <Link
-                  to="/products?category=Ghassanko"
+                  to="/products?category=690deadaead05359ccb451c9"
                   className="inline-flex items-center gap-2 px-8 py-4 text-lg transition-all duration-300 transform shadow-lg btn-secondary hover:shadow-xl hover:-translate-y-1"
                 >
                   {siteContent.ghassanko?.buttonText || "استكشف مجموعة غسانكو"}
