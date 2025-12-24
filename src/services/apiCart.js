@@ -1,14 +1,9 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { API } from "../utils/api";
 
 const cartServices = {
   getUserCart: () => {
-    const response = axios.get(API.getCart, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = axiosInstance.get(API.myCart);
 
     if (response.status !== 200) {
       throw new Error("Failed to fetch cart data");

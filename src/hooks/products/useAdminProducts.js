@@ -1,14 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import productServices from "../../services/apiProducts";
-import { useSearchParams } from "react-router-dom";
 
-// Hook to fetch categories and products for users. `category` controls which products are fetched.
-const useProducts = (category = "all") => {
-  const [searchParams] = useSearchParams();
-
-  // Get the actual category to use (from param or prop)
-  const activeCategory = category || searchParams.get("category") || "all";
-
+// Hook to fetch all products and categories for admin
+const useAdminProducts = () => {
   // Fetch categories (with fallback handled in service)
   const {
     data: categories = [],
@@ -20,17 +14,16 @@ const useProducts = (category = "all") => {
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
 
-  // Fetch filtered products for users
+  // Fetch all products for admin
   const {
     data: products = [],
     refetch: refetchProducts,
     isLoading: isProductsLoading,
     isError: isProductsError,
   } = useQuery({
-    // include the category in the key so React Query refetches when it changes
-    queryKey: ["products", activeCategory],
-    queryFn: () => productServices.getFilteredProducts(activeCategory),
-    keepPreviousData: true,
+    queryKey: ["admin-products"],
+    queryFn: productServices.getAllProductsForAdmin,
+    staleTime: 2 * 60 * 1000, // Cache for 2 minutes
   });
 
   return {
@@ -44,4 +37,5 @@ const useProducts = (category = "all") => {
   };
 };
 
-export default useProducts;
+export default useAdminProducts;
+

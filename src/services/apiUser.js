@@ -1,14 +1,9 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { API } from "../utils/api";
 
 const userServices = {
   fetchAllUsersForAdmin: async () => {
-    const response = await axios.get(API.allUsers, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = await axiosInstance.get(API.allUsers);
 
     if (response.status !== 200) {
       throw new Error("Fetching all users failed");

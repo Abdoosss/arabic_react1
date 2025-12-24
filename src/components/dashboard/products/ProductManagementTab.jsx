@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useProducts from "../../../hooks/products/useProducts";
+import useAdminProducts from "../../../hooks/products/useAdminProducts";
 import useCreateProduct from "./useCreateProduct";
 import useUpdateProduct from "./useUpdateProduct";
 import useDeleteProduct from "./useDeleteProduct";
@@ -13,7 +13,8 @@ const ProductManagementTab = ({
   setSelectedProductForPreview,
   setShowProductPreviewModal,
 }) => {
-  const { products, categories } = useProducts();
+  const { products, categories } = useAdminProducts();
+  console.log(products);
   const { createProduct, isError, isPending } = useCreateProduct();
   const {
     updateProduct,

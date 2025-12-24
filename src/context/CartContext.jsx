@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { API } from "../utils/api";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
@@ -22,16 +22,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-        const headers = {};
-
-        if (token) {
-          headers["Authorization"] = `Bearer ${token}`;
-        }
-
-        const response = await axios.get(API.myCart, {
-          headers: headers,
-        });
+        const response = await axiosInstance.get(API.myCart);
 
         if (response.status === 200) {
           const data = response.data.data;
@@ -56,26 +47,10 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = async (product) => {
     try {
-      const token = localStorage.getItem("authToken");
-
-      const headers = {
-        "Content-Type": "application/json",
-      };
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         API.addToCart,
         {
           productId: product._id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
@@ -108,14 +83,7 @@ export const CartProvider = ({ children }) => {
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.delete(API.removeCartItem(productId), {
-        headers: headers,
-      });
+      const response = await axiosInstance.delete(API.removeCartItem(productId));
 
       if (response.status === 200) {
         setCartItems(response.data.data.items);
@@ -137,22 +105,11 @@ export const CartProvider = ({ children }) => {
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         API.updateCartItem,
         {
           productId: productId,
           quantity: quantity,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
@@ -175,14 +132,7 @@ export const CartProvider = ({ children }) => {
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      await axios.delete(API.clearCart, {
-        headers: headers,
-      });
+      await axiosInstance.delete(API.clearCart);
     } catch (error) {
       console.warn("Backend sync failed for clear:", error);
     }

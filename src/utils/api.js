@@ -4,6 +4,7 @@ export const API = {
   health: `${BASE_URL}/api/health`,
   register: `${BASE_URL}/api/auth/register`,
   login: `${BASE_URL}/api/auth/login`,
+  refresh: `${BASE_URL}/api/auth/refresh`,
   allUsers: `${BASE_URL}/api/users/all-users`,
   addToCart: `${BASE_URL}/api/cart/add-item`,
   myCart: `${BASE_URL}/api/cart/my-cart`,
@@ -25,6 +26,7 @@ export const API = {
   deleteMessage: (messageId) => `${BASE_URL}/api/messages/delete/${messageId}`,
   newProduct: `${BASE_URL}/api/products/new-product`,
   allProducts: `${BASE_URL}/api/products/filter-products`,
+  allProductsForAdmin: `${BASE_URL}/api/products/all-products`,
   filterProducts: (category) =>
     `${BASE_URL}/api/products/filter-products?category=${category}`,
   productDetails: (productId) =>

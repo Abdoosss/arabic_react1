@@ -1,14 +1,9 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { API } from "../utils/api";
 
 const bookingServices = {
   getUserBookings: async () => {
-    const response = await axios.get(API.allReservations, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = await axiosInstance.get(API.allReservations);
 
     if (response.status !== 200) {
       throw new Error("Failed to fetch bookings data");
@@ -18,15 +13,9 @@ const bookingServices = {
   },
 
   updateBookingStatus: async (bookingId, newStatus) => {
-    const response = await axios.put(
+    const response = await axiosInstance.put(
       API.updateReservationStatus(bookingId),
-      newStatus,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      }
+      newStatus
     );
 
     if (response.status !== 200) {

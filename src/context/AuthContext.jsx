@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+import { API } from "../utils/api";
 // import { useCart } from "./CartContext";
 
 const AuthContext = createContext();
@@ -64,6 +66,57 @@ export const AuthProvider = ({ children }) => {
     return newUser;
   };
 
+  const refreshToken = async () => {
+    const currentToken = localStorage.getItem("authToken");
+
+    if (!currentToken) {
+      throw new Error("No token available");
+    }
+
+    try {
+      const response = await axios.post(
+        API.refresh,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const { token, user: userData } = response.data;
+
+      if (token) {
+        // Update token in localStorage
+        localStorage.setItem("authToken", token);
+
+        // Update user data if provided
+        if (userData) {
+          localStorage.setItem("currentUser", JSON.stringify(userData));
+          setUser(userData);
+
+          // Update admin status based on role
+          if (userData.role === "admin") {
+            setIsAdmin(true);
+            localStorage.setItem("isAdmin", "true");
+          } else {
+            setIsAdmin(false);
+            localStorage.setItem("isAdmin", "false");
+          }
+        }
+
+        return { token, user: userData };
+      } else {
+        throw new Error("No token in refresh response");
+      }
+    } catch (error) {
+      // If refresh fails, clear auth data
+      logout();
+      throw error;
+    }
+  };
+
   const value = {
     user,
     isAdmin,
@@ -72,6 +125,7 @@ export const AuthProvider = ({ children }) => {
     adminLogin,
     logout,
     register,
+    refreshToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

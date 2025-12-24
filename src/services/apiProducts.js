@@ -1,11 +1,11 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { API } from "../utils/api";
 import { create } from "zustand";
 
 const productServices = {
   getAllCategories: async () => {
     try {
-      const response = await axios.get(API.allCategories);
+      const response = await axiosInstance.get(API.allCategories);
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch categories");
@@ -15,13 +15,30 @@ const productServices = {
       const categories =
         response.data.data || response.data.categories || response.data || [];
 
-      return Array.isArray(categories) && categories.length > 0
-        ? categories
-        : getFallbackCategories();
+      return Array.isArray(categories) ? categories : [];
     } catch (error) {
       console.error("Error fetching categories:", error);
+      // Return empty array on error
+      return [];
+    }
+  },
 
-      return getFallbackCategories();
+  getAllProductsForAdmin: async () => {
+    try {
+      const response = await axiosInstance.get(API.allProductsForAdmin);
+
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch all products");
+      }
+
+      // Handle different response formats
+      const products =
+        response.data.data || response.data.products || response.data || [];
+
+      return Array.isArray(products) ? products : [];
+    } catch (error) {
+      console.error("Error fetching all products for admin:", error);
+      throw error;
     }
   },
 
@@ -31,7 +48,7 @@ const productServices = {
       const url =
         category === "all" ? API.allProducts : API.filterProducts(category);
 
-      const response = await axios.get(url);
+      const response = await axiosInstance.get(url);
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch products");
@@ -41,19 +58,17 @@ const productServices = {
       const products =
         response.data.data || response.data.products || response.data || [];
 
-      return Array.isArray(products) && products.length > 0
-        ? products
-        : getFallbackProducts(category);
+      return Array.isArray(products) ? products : [];
     } catch (error) {
       console.error("Error fetching products:", error);
-
-      return getFallbackProducts(category);
+      // Return empty array on error for user-facing products
+      return [];
     }
   },
 
   getProductById: async (id) => {
     try {
-      const response = await axios.get(API.productDetails(id));
+      const response = await axiosInstance.get(API.productDetails(id));
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch product details");
@@ -68,7 +83,7 @@ const productServices = {
 
   createProduct: async (productData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         API.newProduct,
         {
           name: productData.name,
@@ -77,12 +92,6 @@ const productServices = {
           category: productData.category,
           images: productData.images,
           itemFeatures: productData.itemFeatures,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
         }
       );
 
@@ -99,7 +108,7 @@ const productServices = {
 
   updateProduct: async (productId, productData) => {
     try {
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         API.updateProduct(productId),
         {
           name: productData.name,
@@ -109,12 +118,6 @@ const productServices = {
           images: productData.images,
           itemFeatures: productData.itemFeatures,
           isActive: productData.isActive,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
         }
       );
 
@@ -131,11 +134,7 @@ const productServices = {
 
   deleteProduct: async (productId) => {
     try {
-      const response = await axios.delete(API.deleteProduct(productId), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
+      const response = await axiosInstance.delete(API.deleteProduct(productId));
 
       if (response.status !== 200) {
         throw new Error("Failed to delete product");
@@ -150,7 +149,7 @@ const productServices = {
 
   getProductPageSettings: async () => {
     try {
-      const response = await axios.get(API.getProductPageSettings);
+      const response = await axiosInstance.get(API.getProductPageSettings);
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch product page settings");
@@ -168,15 +167,9 @@ const productServices = {
       if (!id) {
         throw new Error("Settings ID is required for update");
       }
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         API.updateProductPageSettings(id),
-        settingsData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
+        settingsData
       );
 
       if (response.status !== 200) {

@@ -1,11 +1,11 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { API } from "../utils/api";
 
 const contentServices = {
   // Hero Content Services
   getHeroSlides: async () => {
     try {
-      const response = await axios.get(API.getHeroSlides);
+      const response = await axiosInstance.get(API.getHeroSlides);
       if (!response.data || !response.data.data) {
         throw new Error("No hero slides data found");
       }
@@ -19,7 +19,7 @@ const contentServices = {
 
   createHeroSlide: async (slideData) => {
     try {
-      const response = await axios.post(API.createHeroSlide, slideData);
+      const response = await axiosInstance.post(API.createHeroSlide, slideData);
       return response.data;
     } catch (error) {
       console.error("Error creating hero slide:", error);
@@ -28,7 +28,7 @@ const contentServices = {
   },
   updateHeroSlide: async (slideId, slideData) => {
     try {
-      const response = await axios.put(API.updateHeroSlide(slideId), slideData);
+      const response = await axiosInstance.put(API.updateHeroSlide(slideId), slideData);
       return response.data;
     } catch (error) {
       console.error("Error updating hero slide:", error);
@@ -37,7 +37,7 @@ const contentServices = {
   },
   deleteHeroSlide: async (slideId) => {
     try {
-      const response = await axios.delete(API.deleteHeroSlide(slideId));
+      const response = await axiosInstance.delete(API.deleteHeroSlide(slideId));
       return response.data;
     } catch (error) {
       console.error("Error deleting hero slide:", error);

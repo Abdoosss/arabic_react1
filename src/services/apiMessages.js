@@ -1,15 +1,10 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { API } from "../utils/api";
 import { mark } from "framer-motion/client";
 
 const messagesServices = {
   getAllMessages: async () => {
-    const response = await axios.get(API.allMessages, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = await axiosInstance.get(API.allMessages);
 
     if (response.status !== 200) {
       throw new Error("Failed to fetch messages data");
@@ -19,12 +14,7 @@ const messagesServices = {
   },
 
   submitMessage: async (messageData) => {
-    const response = await axios.post(API.submitMessage, messageData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = await axiosInstance.post(API.submitMessage, messageData);
 
     if (response.status !== 201) {
       throw new Error("Failed to submit message");
@@ -34,15 +24,9 @@ const messagesServices = {
   },
 
   markMessageAsRead: async (messageId) => {
-    const response = await axios.put(
+    const response = await axiosInstance.put(
       API.markMessageAsRead(messageId),
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      }
+      {}
     );
 
     if (response.status !== 200) {
@@ -53,12 +37,7 @@ const messagesServices = {
   },
 
   deleteMessage: async (messageId) => {
-    const response = await axios.delete(API.deleteMessage(messageId), {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
+    const response = await axiosInstance.delete(API.deleteMessage(messageId));
 
     if (response.status !== 200) {
       throw new Error("Failed to delete message");

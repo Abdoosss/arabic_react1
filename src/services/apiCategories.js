@@ -1,15 +1,10 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { API } from "../utils/api";
 
 const categoryServices = {
   getAllCategoriesForAdmin: async () => {
     try {
-      const response = await axios.get(API.allCategoriesForAdmin, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
+      const response = await axiosInstance.get(API.allCategoriesForAdmin);
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch categories");
@@ -27,15 +22,9 @@ const categoryServices = {
 
   createCategory: async (categoryData) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         API.newCategory,
-        { name: categoryData.name, description: categoryData.description },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
+        { name: categoryData.name, description: categoryData.description }
       );
 
       if (response.status !== 201) {
@@ -51,15 +40,9 @@ const categoryServices = {
 
   updateCategory: async (categoryId, categoryData) => {
     try {
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         API.updateCategory(categoryId),
-        { name: categoryData.name, description: categoryData.description },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
+        { name: categoryData.name, description: categoryData.description }
       );
 
       if (response.status !== 200) {
@@ -75,12 +58,7 @@ const categoryServices = {
 
   deleteCategory: async (categoryId) => {
     try {
-      const response = await axios.delete(API.deleteCategory(categoryId), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
+      const response = await axiosInstance.delete(API.deleteCategory(categoryId));
 
       if (response.status !== 200) {
         throw new Error("Failed to delete category");
